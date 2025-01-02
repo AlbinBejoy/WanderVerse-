@@ -5,7 +5,7 @@ from app.models import Images
 
 @app.route('/')
 def hello_world():  # put application's code here
-    return 'Hello World!-'
+    return render_template("main.html")
 
 @app.route('/create')
 def create():
