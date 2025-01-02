@@ -9,3 +9,4 @@ app.app_context().push()
 
 from app import routes
 from app import models
+from app import utility_ai
