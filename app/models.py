@@ -13,7 +13,7 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
     location = db.Column(db.String(255), nullable=False)
-    highlight = db.Column(db.String(255), nullable=False)
+    highlight = db.Column(db.String(255), nullable=True)
     top_attractions = db.Column(db.String(255), nullable=False)
     tips = db.Column(db.String(255), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
