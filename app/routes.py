@@ -4,9 +4,12 @@ from app.utility_ai import *
 from app.models import *
 
 
+
 @app.route('/')
 def hello_world():  # put application's code here
     return render_template("main.html")
+
+
 
 @app.route('/create', methods=['GET', 'POST'])
 def create():
