@@ -1,0 +1,114 @@
+/* Reset default styles for a clean start */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling for dark mode */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #121212; /* Dark background for the entire page */
+    color: #E0E0E0; /* Light text color for contrast */
+    line-height: 1.6; /* Improved readability */
+    display: flex;
+    justify-content: center; /* Centering the container horizontally */
+    align-items: center; /* Centering the container vertically */
+    height: 100vh; /* Full height of the viewport */
+}
+
+/* Main container for post creation */
+.create-post-container {
+    background-color: #1E1E1E; /* Slightly lighter dark background for the container */
+    border-radius: 8px; /* Rounded corners for the container */
+    padding: 2rem; /* Padding inside the container */
+    width: 90%; /* Responsive width */
+    max-width: 1000px; /* Maximum width for larger screens */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Soft shadow for depth */
+}
+
+/* Header styling */
+.create-post-container h1 {
+    margin-bottom: 1.5rem; /* Space below the header */
+    text-align: center; /* Center align the header */
+    font-size: 1.8rem; /* Slightly larger font size for the title */
+}
+
+/* Form styling */
+.create-post-form {
+    display: flex; /* Flexbox layout */
+    flex-direction: column; /* Vertical stacking of form elements */
+}
+
+/* General styling for form groups */
+.form-group {
+    margin-bottom: 1.5rem; /* Space between form groups */
+}
+
+/* Label styling */
+.label {
+    display: block; /* Block display for labels */
+    margin-bottom: 0.5rem; /* Space below labels */
+    font-weight: bold; /* Bold text for labels */
+}
+
+/* Textarea styling */
+.textarea {
+    width: 100%; /* Full width for the textarea */
+    height: 300px; /* Fixed height */
+    padding: 0.75rem; /* Inner padding */
+    border: 1px solid #333; /* Dark border */
+    border-radius: 4px; /* Rounded corners */
+    background-color: #2A2A2A; /* Dark background for textarea */
+    color: #E0E0E0; /* Light text color */
+    resize: none; /* Disable textarea resizing */
+}
+
+/* File input styling */
+.file-input {
+    display: block; /* Block display for file inputs */
+    margin-top: 0.5rem; /* Space above file input */
+    margin-bottom: 1rem; /* Space below file input */
+    padding: 0.75rem; /* Inner padding */
+    width: 100%;
+    border: 1px solid #333; /* Dark border */
+    border-radius: 4px; /* Rounded corners */
+    background-color: #2A2A2A; /* Dark background for file input */
+    color: #E0E0E0; /* Light text color */
+}
+
+/* Button styling */
+.submit-btn {
+    background-color: #d2d2d2; /* Accent color */
+    color: #1c1c1c; /* White text */
+    border: none; /* No border */
+    border-radius: 4px; /* Rounded corners */
+    padding: 1rem; /* Padding for buttons */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+.add-btn{
+    background-color: #d2d2d2; /* Accent color */
+    color: #1c1c1c; /* White text */
+    border: none; /* No border */
+    border-radius: 4px; /* Rounded corners */
+    padding: 0.5rem; /* Padding for buttons */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+/* Button hover effect */
+.add-btn:hover, .submit-btn:hover {
+    background-color: #838383; /* Darker shade on hover */
+}
+
+/* Responsive design adjustments */
+@media (max-width: 768px) {
+    .create-post-container {
+        padding: 1.5rem; /* Reduce padding on smaller screens */
+    }
+
+    .textarea {
+        height: 120px; /* Adjust textarea height for mobile */
+    }
+}

@@ -1,0 +1,52 @@
+/* Dark Mode Styles */
+body {
+    background-color: #121212; /* Dark background */
+    color: #ffffff; /* Light text */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Error Container */
+.error-container {
+    text-align: center;
+    margin: 5% auto;
+    padding: 20px;
+    max-width: 600px;
+}
+
+/* Error Image */
+.error-image {
+    max-width: 50%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+/* Error Heading */
+h1 {
+    font-size: 24px;
+    color: #d3d3d3; /* Soft red for warning */
+    margin-bottom: 10px;
+}
+
+/* Error Paragraph */
+p {
+    font-size: 16px;
+    color: #d3d3d3; /* Lighter gray for paragraph text */
+    margin-bottom: 20px;
+}
+
+/* Error Link */
+.error-link {
+    display: inline-block;
+    text-decoration: none;
+    color: #171717; /* Soft green */
+    padding: 10px 20px;
+    background-color: #b5b5b5; /* Slightly darker green */
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.error-link:hover {
+    background-color: #808080; /* Dark green on hover */
+}
