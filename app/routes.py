@@ -4,9 +4,12 @@ from app.utility_ai import *
 from app.models import *
 from werkzeug.utils import secure_filename
 
+
 @app.route('/')
 def hello_world():  # put application's code here
-    return 'Hello World!-'
+    return render_template("main.html")
+
+
 
 
 @app.route('/create', methods=['GET', 'POST'])
