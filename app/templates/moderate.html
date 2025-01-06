@@ -1,15 +1,20 @@
-{% extends 'base.html' %}
-
-{% block head %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Error</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/error.css') }}">
-{% endblock %}
-
-{% block body %}
+</head>
+<body>
     <div class="error-container">
-        <img src="{{ url_for('static', filename='Images/undraw_access-denied_krem.svg') }}" alt="Error Illustration" class="error-image">
+        <img src="{{ url_for('static', filename='ui_images/undraw_access-denied_krem.svg') }}" alt="Error Illustration" class="error-image">
         <h1>This blog does not follow community guidelines</h1>
         <p>If you believe this was a mistake, please let us know by clicking the link below.</p>
         <a href="{{ url_for('create') }}" class="error-link">Tell us if we made a mistake</a>
     </div>
-{% endblock %}
+
+</body>
+</html>

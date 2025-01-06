@@ -15,7 +15,7 @@ class Travel(BaseModel):
     Location: str
     Duration: str
     TopAttractions: str
-    Highlights: list[str]=Field(description="Wat happened on each day with day number included")
+    Highlights: list[str]=Field(description="Wat happened on each day with day number included in at least 100 words")
     Tips: str
     Category: str=Field(description="Which of the following categories the blog fits: Business,Leisure,Family,Religious,Sports,Educational")
 

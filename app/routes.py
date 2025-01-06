@@ -1,3 +1,7 @@
+import pickle
+
+from pygments import highlight
+
 from app import app
 from flask import render_template, request, redirect, url_for
 from app.utility_ai import *
@@ -55,7 +59,7 @@ def create():
         # Commit all image records
         db.session.commit()
 
-        return redirect('/create')
+        return redirect('/posts/{post_id}'.format(post_id=post_id))
 
     return render_template('creat_page.html')
 
@@ -63,3 +67,11 @@ def create():
 @app.route('/flagged')
 def flagged():
     return render_template('moderate.html')
+
+
+@app.route('/posts/<int:post_id>', methods=['GET', 'POST'])
+def posts(post_id):
+    post = Post.query.get_or_404(post_id)
+    highlights=pickle.loads(post.highlight)
+    images = Images.query.filter_by(post_id=post_id).all()
+    return render_template('post.html', post=post, images=images,highlights=highlights)

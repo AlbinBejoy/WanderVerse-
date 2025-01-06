@@ -6,8 +6,8 @@
 }
 
 /* Body styling for dark mode */
-body {
-    font-family: 'Arial', sans-serif;
+main {
+    font-family: 'Poppins', sans-serif;
     background-color: #121212; /* Dark background for the entire page */
     color: #E0E0E0; /* Light text color for contrast */
     line-height: 1.6; /* Improved readability */

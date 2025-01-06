@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>{{ post.title }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="post-container">
+        <header class="post-header">
+            <h1>{{ post.title }}</h1>
+        </header>
+
+        <section class="post-details">
+            <h3>Location:</h3>
+            <p>{{ post.location }}</p>
+            <h3>Duration:</h3>
+            <p>{{ post.duration }}</p>
+        </section>
+
+        <section class="post-images">
+            {% for image in images %}
+                <img src="{{ url_for('static', filename='Images/' + image.image1) }}" alt="Image related to {{ post.title }}">
+            {% endfor %}
+        </section>
+
+        <section class="post-highlights">
+            <h3>Daily Highlights:</h3>
+            <table>
+                {% for day in highlights %}
+                    <tr>
+                        <td>{{ day }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </section>
+
+        <section class="post-extra">
+            <h3>Top Attractions:</h3>
+            <p>{{ post.top_attractions }}</p>
+            <h3>Tips:</h3>
+            <p>{{ post.tips }}</p>
+        </section>
+    </div>
+{% endblock %}
