@@ -2,6 +2,44 @@
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
 }
+
+/* For Webkit Browsers (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+  height: 8px; /* Height for horizontal scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #ff4b4b, #ff704e); /* Stylish gradient */
+  border-radius: 4px; /* Rounded corners for the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #ff4b4b, #ff704e); /* Hover effect */
+}
+
+::-webkit-scrollbar-track {
+  background: #121212; /* Light background for the track */
+  border-radius: 4px; /* Rounded corners for the track */
+}
+
+::-webkit-scrollbar-track:hover {
+  background: #121212; /* Slightly darker on hover */
+}
+
+/* For Firefox */
+html {
+  scrollbar-width: thin; /* Makes scrollbar minimal */
+  scrollbar-color: #ff4b4b #121212; /* Thumb color and track color */
+}
+
+/* Optional Customization for Overflow Containers */
+.container {
+  overflow-y: auto; /* Adds vertical scrolling if needed */
+  max-height: 300px; /* Example height for a scrollable area */
+}
+
+
 body{
     margin: 0;
     padding: 0;
