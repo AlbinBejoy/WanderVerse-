@@ -19,6 +19,7 @@ class Post(db.Model):
     duration = db.Column(db.String(255), nullable=False)
     tips = db.Column(db.String(255), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    trash=db.Column(db.Boolean, nullable=False, default=False)
 
 class Images(db.Model):
     id = db.Column(db.Integer, primary_key=True)

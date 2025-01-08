@@ -6,9 +6,9 @@ import os
 import pickle
 
 load_dotenv()
-
-openai.api_key = os.getenv("OPENAI_API_KEY")
 client = openai.OpenAI()
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
 
 class Travel(BaseModel):
     Title: str=Field(description="Title of travel")

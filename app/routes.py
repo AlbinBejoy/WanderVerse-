@@ -1,5 +1,4 @@
 import pickle
-
 from app import app
 from flask import render_template, request, redirect, url_for
 from app.utility_ai import *
@@ -75,3 +74,30 @@ def posts(post_id):
     highlights=pickle.loads(post.highlight)
     images = Images.query.filter_by(post_id=post_id).all()
     return render_template('post.html', post=post, images=images,highlights=highlights)
+
+
+@app.route('/My_blogs', methods=['GET', 'POST'])
+def my_blogs():
+    user_id = 1
+    results = (
+        db.session.query(Post, db.func.group_concat(Images.image1))
+        .join(Images, Post.id == Images.post_id)
+        .filter(Post.user_id == user_id)
+        .filter(Post.trash==False)
+        .group_by(Post.id)
+        .all()
+    )
+    return render_template('my_blogs.html', results=results)
+
+@app.route('/trash', methods=['GET', 'POST'])
+def trash():
+    user_id = 1
+    results = (
+        db.session.query(Post, db.func.group_concat(Images.image1))
+        .join(Images, Post.id == Images.post_id)
+        .filter(Post.user_id == user_id)
+        .filter(Post.trash==True)
+        .group_by(Post.id)
+        .all()
+    )
+    return render_template('trash.html', results=results)
