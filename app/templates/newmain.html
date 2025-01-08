@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+<title>WanderVerse</title>
+
+
+<!-- bootstrap css cdn	 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+<!-- index css linking cdn -->
+<link rel="stylesheet" type="text/css" href="./static/style.css">
+
+<!-- slider google font cdn -->
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital@1&display=swap" rel="stylesheet">
+
+<!-- enter destination google font cdn -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+
+<!-- travel bug pro destnation heading google font cdn -->
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
+
+<!-- gallery heading google font cdn -->
+<link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
+
+<!-- jquery cdn -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!-- font awesome cdn -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+{% block body %}
+<div class="position-fixed res" style="overflow-x: hidden;" id="page_top">
+
+	<div class="row">
+
+		<div id="slider_carousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
+
+			  <div class="carousel-indicators">
+			    <button type="button" data-bs-target="#slider_carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+			    <button type="button" data-bs-target="#slider_carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+			    <button type="button" data-bs-target="#slider_carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+			    <button type="button" data-bs-target="#slider_carousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+			  </div>
+
+		  <div class="carousel-inner">
+
+		    <div class="carousel-item slider_dmns active s1" data-bs-interval="4000">
+
+		  		<div class="slider_text mt-3 mx-auto text-center pt-5">
+
+		  			<p>We are here to</p>
+		  			<p>Planning Business</p>
+		  			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		  			tempor incididunt ut labore et dolore magna aliqua.</p>
+
+		  			<button class="more_details_box btn_hover">
+		  				<a href="#">MORE DETAILS</a>
+		  			</button>
+
+		  		</div>
+
+		    </div>
+
+		    <div class="carousel-item slider_dmns s2" data-bs-interval="4000">
+
+		     	<div class="slider_text mt-3 mx-auto text-center pt-5">
+
+		  			<p>We are here to</p>
+		  			<p>Make Journey</p>
+		  			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		  			tempor incididunt ut labore et dolore magna aliqua.</p>
+
+		  			<button class="more_details_box btn_hover">
+		  				<a href="#">MORE DETAILS</a>
+		  			</button>
+
+		  		</div>
+
+		    </div>
+
+		    <div class="carousel-item slider_dmns s3" data-bs-interval="4000">
+
+		     	<div class=" slider_text mt-3 mx-auto text-center pt-5">
+
+		  			<p>We provide</p>
+		  			<p>Great Service</p>
+		  			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		  			tempor incididunt ut labore et dolore magna aliqua.</p>
+
+		  			<button class="more_details_box btn_hover">
+		  				<a href="#">MORE DETAILS</a>
+		  			</button>
+
+		  		</div>
+
+		    </div>
+
+		    <div class="carousel-item slider_dmns s4" data-bs-interval="4000">
+
+		     	<div class=" slider_text mt-3 mx-auto text-center pt-5">
+
+		  			<p>We give high</p>
+		  			<p>Quality Service</p>
+		  			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		  			tempor incididunt ut labore et dolore magna aliqua.</p>
+
+		  			<button class="more_details_box btn_hover">
+		  				<a href="#">MORE DETAILS</a>
+		  			</button>
+
+		  		</div>
+
+		    </div>
+
+		  </div>
+
+		</div>
+
+	</div>
+
+</div>
+
+    <div class="contaier-fluid " style="overflow-x: hidden;">
+
+	<div class="row td_heading ">
+		<center>TOP DESTINATIONS</center>
+	</div>
+
+	<div class="row " style="margin-top: -25px;">
+
+		<div class="col-md-2 p-0 container ">
+			<img src="./fp_imgs/g1.jpg" height="220px" width="100%">
+
+			  <div class="g_overlay">
+    			<div class="text"><a href="#" style="color: white; font-size: 20px;">Paris, <br> France</a></div>
+			  </div>
+		</div>
+
+		<div class="col-md-2 p-0 container ">
+			<img src="./fp_imgs/g2.jpg" height="220px" width="100%">
+
+			<div class="g_overlay">
+    			<div class="text"><a href="#" style="color: white; font-size: 20px;">London, <br> UK</a></div>
+			  </div>
+		</div>
+
+		<div class="col-md-2 p-0 container ">
+			<img src="./fp_imgs/g3.jpg" height="220px" width="100%">
+
+			<div class="g_overlay">
+    			<div class="text"><a href="#" style="color: white; font-size: 20px;">Leh, <br> India</a></div>
+			</div>
+		</div>
+
+		<div class="col-md-2 p-0 container ">
+			<img src="./fp_imgs/g4.jpg" height="220px" width="100%">
+
+			<div class="g_overlay">
+    			<div class="text"><a href="#" style="color: white; font-size: 20px;">New York, <br> U.S.A</a></div>
+			</div>
+		</div>
+
+		<div class="col-md-2 p-0 container ">
+			<img src="./fp_imgs/g5.jpg" height="220px" width="100%">
+
+			<div class="g_overlay">
+    			<div class="text"><a href="#" style="color: white; font-size: 20px;">Toronto, <br> Canada</a></div>
+			</div>
+		</div>
+
+		<div class="col-md-2 p-0 container ">
+			<img src="./fp_imgs/g6.jpg" height="220px" width="100%">
+
+			<div class="g_overlay">
+    			<div class="text"><a href="#" style="color: white; font-size: 20px;">Sydney, <br> Australia</a></div>
+			</div>
+		</div>
+
+	</div>
+
+</div>
+{% endblock %}
