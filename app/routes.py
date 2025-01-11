@@ -121,6 +121,8 @@ def restore(post_id):
 @app.route('/delete_trash/<int:post_id>', methods=['GET', 'POST'])
 def delete_trash(post_id):
     post = Post.query.get_or_404(post_id)
+    img = Images.query.filter_by(post_id=post_id).first_or_404()
+    db.session.delete(img)
     db.session.delete(post)
     db.session.commit()
     return redirect('/trash')
