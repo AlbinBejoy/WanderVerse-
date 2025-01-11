@@ -101,3 +101,26 @@ def trash():
         .all()
     )
     return render_template('trash.html', results=results)
+
+@app.route('/delete/<int:post_id>', methods=['GET', 'POST'])
+def delete(post_id):
+    post = Post.query.get_or_404(post_id)
+    post.trash=True
+    db.session.add(post)
+    db.session.commit()
+    return redirect('/My_blogs')
+
+@app.route('/restore/<int:post_id>', methods=['GET', 'POST'])
+def restore(post_id):
+    post = Post.query.get_or_404(post_id)
+    post.trash=False
+    db.session.add(post)
+    db.session.commit()
+    return redirect('/My_blogs')
+
+@app.route('/delete_trash/<int:post_id>', methods=['GET', 'POST'])
+def delete_trash(post_id):
+    post = Post.query.get_or_404(post_id)
+    db.session.delete(post)
+    db.session.commit()
+    return redirect('/trash')

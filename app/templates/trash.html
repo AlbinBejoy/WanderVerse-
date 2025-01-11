@@ -8,13 +8,26 @@
 {% block body %}
     <h1>Trash</h1>
     <div class="blogs">
+
         {% for post, images_str in results %}
-            <div class="blog" data-images="{{ images_str }}">
+            <div class="blog" data-images="{{ images_str }}" style="position: relative;">
                 <a href="{{ url_for('posts', post_id=post.id) }}">
                     <img src="{{ url_for('static', filename='Images/' + images_str.split(',')[0]) }}" alt="Blog Image" class="blog-image">
                     <div class="blog-title">{{ post.title }}</div>
                     <div class="blog-destination">{{ post.location }}</div>
                 </a>
+                <!-- Menu button inside each blog -->
+                <div class="menu-container" onclick="toggleMenu(this)">
+                    <div class="group">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                    <div class="frame1 menu hidden">
+                        <div class="info"><span><a href="{{ url_for('delete_trash', post_id=post.id) }}">Delete</a></span></div>
+                        <div class="info"><span><a href="{{ url_for('restore', post_id=post.id) }}">Restore</a></span></div>
+                    </div>
+                </div>
             </div>
         {% endfor %}
     </div>
@@ -39,8 +52,33 @@
                 imgElement.src = `/static/Images/${images[0]}`; // Reset to first image
             });
         });
+
+        // Function to toggle menu for a specific blog
+        function toggleMenu(menuContainer) {
+            // Close any other open menus
+            document.querySelectorAll('.frame1.menu').forEach(menu => {
+                if (!menuContainer.contains(menu)) {
+                    menu.classList.add('hidden');
+                }
+            });
+
+            // Toggle the visibility of the current menu
+            const menu = menuContainer.querySelector('.frame1.menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Close menu when clicking elsewhere
+        document.addEventListener('click', event => {
+            if (!event.target.closest('.menu-container')) {
+                document.querySelectorAll('.frame1.menu').forEach(menu => {
+                    menu.classList.add('hidden');
+                });
+            }
+        });
     </script>
 {% endblock %}
+
+
 
 
 
