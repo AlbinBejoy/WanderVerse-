@@ -112,3 +112,20 @@ main {
         height: 120px; /* Adjust textarea height for mobile */
     }
 }
+
+.load {
+    position: fixed; /* Ensures the overlay stays in place relative to the viewport */
+    top: 0;
+    left: 0;
+    width: 100%; /* Covers the full width of the screen */
+    height: 100%; /* Covers the full height of the screen */
+    background-color: rgba(18, 18, 18, 0.81); /* Semi-transparent dark background */
+    z-index: 9999; /* Ensures it appears above all other content */
+    display: flex; /* Enables centering with flexbox */
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
+}
+
+.hidden {
+    display: none;
+}

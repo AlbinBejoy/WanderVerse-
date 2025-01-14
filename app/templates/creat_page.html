@@ -19,7 +19,7 @@
 {% block body %}
 <div class="create-post-container">
     <h1>Create Your Post</h1>
-    <form action="/create" method="POST" enctype="multipart/form-data" class="create-post-form">
+    <form action="/create" method="POST" enctype="multipart/form-data" class="create-post-form" onsubmit="load()">
         <div class="form-group">
             <label for="content" class="label">Enter your post:</label>
             <textarea name="content" id="content" class="textarea" placeholder="Write something..." required></textarea>
@@ -36,4 +36,16 @@
         <input type="submit" value="Post" class="submit-btn">
     </form>
 </div>
+<div class="load hidden">
+    <img src="static/ui_images/load.gif" alt="Loading..." width="200px" height="200px">
+</div>
+
+
+
+    <script>
+    function load() {
+    const loader = document.querySelector('.load');
+    loader.classList.remove('hidden'); // Remove the hidden class to show the loader
+}
+    </script>
 {% endblock %}
