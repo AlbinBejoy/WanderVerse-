@@ -12,7 +12,7 @@ def hello_world():  # put application's code here
 
 @app.route('/')
 def home():  # put application's code here
-    return render_template("newmain.html")
+    return render_template("creed.html")
 
 
 @app.route('/create', methods=['GET', 'POST'])
