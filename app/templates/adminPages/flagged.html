@@ -1,0 +1,35 @@
+{% extends 'adminPages/adminhome.html' %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/users.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="users-page">
+        <h1 class="page-title">Violations</h1>
+        <div class="users-table-container">
+            <table class="users-table">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Blog</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user,moderation in flagged %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ moderation.content }}</td>
+                        <td>
+                            <button class="action-btn">Allow</button>
+                            <button class="action-btn delete-btn">Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
