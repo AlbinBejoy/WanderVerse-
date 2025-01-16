@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Categories</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/categories.css') }}">
+{% endblock %}
+
+{% block body %}
+    <h1>Categories</h1>
+    <div class="blogs">
+        {% for category, posts in results.items() %}
+        <div class="category-row" id="row-{{ loop.index }}">
+            <h2 class="row-title">
+                {{ category }}
+            </h2>
+            <div class="blogs-row" id="blogs-row-{{ loop.index }}">
+                {% for post, images_str in posts %}
+                <div class="blog" data-images="{{ images_str }}" style="position: relative;">
+                    <a href="{{ url_for('posts', post_id=post.id) }}">
+                        <img src="{{ url_for('static', filename='Images/' + images_str.split(',')[0]) }}" alt="Blog Image" class="blog-image">
+                        <div class="blog-title">{{ post.title }}</div>
+                        <div class="blog-destination">{{ post.location }}</div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            <!-- Navigation Arrows -->
+            <div class="arrow-container">
+                <button class="arrow arrow-left" onclick="scrollRow('blogs-row-{{ loop.index }}', -1)">&lt;</button>
+                <button class="arrow arrow-right" onclick="scrollRow('blogs-row-{{ loop.index }}', 1)">&gt;</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        // JavaScript to handle hover effect and image swapping
+        document.querySelectorAll('.blog').forEach(blog => {
+            const images = blog.dataset.images.split(',');
+            let currentIndex = 0;
+            const imgElement = blog.querySelector('.blog-image');
+
+            blog.addEventListener('mouseenter', () => {
+                currentIndex = 0; // Start cycling images on hover
+                blog.interval = setInterval(() => {
+                    currentIndex = (currentIndex + 1) % images.length;
+                    imgElement.src = `/static/Images/${images[currentIndex]}`;
+                }, 1000); // Change image every 1 second
+            });
+
+            blog.addEventListener('mouseleave', () => {
+                clearInterval(blog.interval);
+                imgElement.src = `/static/Images/${images[0]}`; // Reset to first image
+            });
+        });
+
+        // JavaScript for row navigation
+        function scrollRow(rowId, direction) {
+            const row = document.getElementById(rowId);
+            const scrollAmount = row.offsetWidth / 2; // Scroll half the row width
+            row.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+        }
+    </script>
+{% endblock %}

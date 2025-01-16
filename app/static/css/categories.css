@@ -1,0 +1,219 @@
+/* Blogs Container - Grid Layout */
+.blogs {
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 2.8rem;
+    font-weight: 600;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+
+
+/* Individual Blog */
+
+
+
+.blog a {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Blog Image */
+
+
+
+
+
+        .menu-container {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            z-index: 10;
+            padding: 10px;
+        }
+
+        .group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .dot {
+            width: 5px;
+            height: 5px;
+            background-color: #e3e3e3;
+            border-radius: 50%;
+            margin: 2px 0;
+        }
+
+        .frame1.menu {
+            position: absolute;
+            bottom: 30px;
+            right: 0;
+            background-color: #303030;
+            box-shadow: 0 4px 6px rgba(16, 16, 16, 0.1);
+            visibility: visible;
+            z-index: 20;
+            border-radius: 10px;
+        }
+
+        .frame1.menu.hidden {
+            display: none;
+        }
+
+        .info a{
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            color: #e0e0e0;
+        }
+
+        .info:hover {
+            background-color: #121212;
+        }
+
+/* Row Navigation Arrows */
+
+/* Show All Blogs Button */
+.show-all {
+    background-color: #1e1e1e;
+    color: #ff704e;
+    border: 1px solid #ff704e;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    float: right;
+    margin-left: 10px;
+}
+
+.show-all:hover {
+    background-color: #ff704e;
+    color: #ffffff;
+}
+
+
+
+/* Categories Container */
+.categories-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+/* Category Row */
+.category-row {
+    margin-bottom: 40px;
+    width: 1100px;
+}
+
+.row-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+/* Blogs Row - Horizontal Scrolling */
+.blogs-row {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+    padding: 10px 0;
+    scroll-behavior: smooth;
+}
+
+.blogs-row::-webkit-scrollbar {
+    height: 8px;
+}
+
+.blogs-row::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 10px;
+}
+
+/* Blog Card */
+.blog {
+    flex: 0 0 250px; /* Fixed width for each blog */
+    display: flex;
+    flex-direction: column;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.blog:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 15px rgba(255, 255, 255, 0.2);
+}
+
+.blog img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-bottom: 2px solid #333333;
+    transition: transform 0.3s ease;
+}
+
+.blog img:hover {
+    transform: scale(1.05);
+}
+
+.blog-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #e8e8e8;
+    padding: 10px 15px 5px;
+}
+
+.blog-destination {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #ff704e;
+    padding: 0 15px 10px;
+}
+
+/* Navigation Arrows */
+.arrow-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.arrow {
+    background-color: #ff704e;
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.arrow:hover {
+    background-color: #ff5630;
+}

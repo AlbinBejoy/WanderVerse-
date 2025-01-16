@@ -10,6 +10,7 @@ from werkzeug.utils import secure_filename
 def hello_world():  # put application's code here
     return render_template("main.html")
 
+
 @app.route('/')
 def home():  # put application's code here
     return render_template("creed.html")
@@ -23,7 +24,7 @@ def create():
         if not task:
             return "Task content is required", 400
 
-        check=moderate(task)
+        check = moderate(task)
         if not check.Flagged:
             # Create task and save to database
             add = make(task)
@@ -71,9 +72,9 @@ def flagged():
 @app.route('/posts/<int:post_id>', methods=['GET', 'POST'])
 def posts(post_id):
     post = Post.query.get_or_404(post_id)
-    highlights=pickle.loads(post.highlight)
+    highlights = pickle.loads(post.highlight)
     images = Images.query.filter_by(post_id=post_id).all()
-    return render_template('post.html', post=post, images=images,highlights=highlights)
+    return render_template('post.html', post=post, images=images, highlights=highlights)
 
 
 @app.route('/My_blogs', methods=['GET', 'POST'])
@@ -83,11 +84,12 @@ def my_blogs():
         db.session.query(Post, db.func.group_concat(Images.image1))
         .join(Images, Post.id == Images.post_id)
         .filter(Post.user_id == user_id)
-        .filter(Post.trash==False)
+        .filter(Post.trash == False)
         .group_by(Post.id)
         .all()
     )
     return render_template('my_blogs.html', results=results)
+
 
 @app.route('/trash', methods=['GET', 'POST'])
 def trash():
@@ -96,27 +98,30 @@ def trash():
         db.session.query(Post, db.func.group_concat(Images.image1))
         .join(Images, Post.id == Images.post_id)
         .filter(Post.user_id == user_id)
-        .filter(Post.trash==True)
+        .filter(Post.trash == True)
         .group_by(Post.id)
         .all()
     )
     return render_template('trash.html', results=results)
 
+
 @app.route('/delete/<int:post_id>', methods=['GET', 'POST'])
 def delete(post_id):
     post = Post.query.get_or_404(post_id)
-    post.trash=True
+    post.trash = True
     db.session.add(post)
     db.session.commit()
     return redirect('/My_blogs')
 
+
 @app.route('/restore/<int:post_id>', methods=['GET', 'POST'])
 def restore(post_id):
     post = Post.query.get_or_404(post_id)
-    post.trash=False
+    post.trash = False
     db.session.add(post)
     db.session.commit()
     return redirect('/My_blogs')
+
 
 @app.route('/delete_trash/<int:post_id>', methods=['GET', 'POST'])
 def delete_trash(post_id):
@@ -126,3 +131,25 @@ def delete_trash(post_id):
     db.session.delete(post)
     db.session.commit()
     return redirect('/trash')
+
+@app.route('/categories', methods=['GET', 'POST'])
+def categories():
+    user_id = 1
+    # Query posts and associated images
+    results = (
+        db.session.query(Post, db.func.group_concat(Images.image1))
+        .join(Images, Post.id == Images.post_id)
+        .filter(Post.user_id == user_id, Post.trash == False)
+        .group_by(Post.id)
+        .all()
+    )
+
+    # Group posts by category
+    categories = {}
+    for post, images_str in results:
+        if post.Category not in categories:
+            categories[post.Category] = []
+        categories[post.Category].append((post, images_str))
+
+    return render_template('categories.html', results=categories)
+
