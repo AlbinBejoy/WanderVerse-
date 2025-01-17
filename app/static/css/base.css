@@ -54,8 +54,9 @@ main{
     width: 5rem;
     height: 100vh;
     position: fixed;
-    background-color: #1E1E1E;
+    background-color: rgba(7, 7, 7, 0);
     transition: width 200ms ease;
+    z-index: 9999;
 }
 .navbar-nav{
     list-style: none;
@@ -100,6 +101,7 @@ main{
 
 .navbar:hover{
     width: 14rem;
+    background-color: #000000;
 }
 
 .navbar:hover .link-text{
