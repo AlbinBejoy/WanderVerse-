@@ -1,0 +1,278 @@
+/* Profile Page Styles */
+body.profile-page {
+    display: flex;
+    justify-content: center; /* Center the container horizontally */
+    align-items: center;    /* Center the container vertically */
+    background: linear-gradient(to right, #141E30, #243B55);
+    color: #fff;
+    font-family: 'Poppins', Arial, sans-serif;
+    margin: 0;
+    min-height: 100vh; /* Full viewport height */
+}
+
+/* Profile Container */
+.profile-container {
+    display: flex;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px; /* Increased padding */
+    border-radius: 10px; /* Slightly larger border radius */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    width: 1200px; /* Wider container */
+    max-width: 90%;
+    height: 350px; /* Increased height for better spacing */
+    gap: 20px; /* More space between sections */
+    flex-wrap: wrap; /* For responsiveness */
+    justify-content: center; /* Center the items */
+}
+
+/* Left Section: Profile Picture and Details */
+.profile-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    text-align: center;
+}
+
+.profile-image {
+    width: 150px; /* Larger profile picture */
+    height: 150px;
+    border-radius: 50%;
+    background-color: #555;
+    border: 3px solid #fff;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 15px;
+}
+
+.profile-details h1 {
+    font-size: 1.8rem; /* Slightly larger font */
+    color: #ffffff;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+    margin-bottom: 5px;
+}
+
+.profile-details p {
+    font-size: 1.1rem; /* Larger font for details */
+    color: #ccc;
+}
+
+/* Right Section: Buttons */
+.profile-right {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two buttons per row */
+    gap: 1px 10px; /* Adjust spacing between buttons */
+    justify-content: center; /* Center grid content */
+    align-items: center; /* Align buttons vertically */
+    flex: 1;
+}
+
+.profile-button {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:10px 40px; /* Adjust height and width of the button */
+    font-size: 1.2rem; /* Larger text size */
+    text-align: center;
+    font-weight: bold;
+    color: #ff704e;
+    border: 2px solid #ff704e; /* Button border */
+    border-radius: 50px; /* Rounded corners */
+    background:linear-gradient(#555) ; /* Background color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 150px; /* Wider button width */
+    height: 30px; /* Taller button height */
+    gap: 10px;
+}
+
+.profile-button:hover {
+    transform: scale(1.05); /* Slightly enlarge on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Hamburger Menu */
+.hamburger-menu {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 30px;
+    cursor: pointer;
+    color: #fff;
+    z-index: 10;
+}
+
+/* Sliding Menu */
+.sliding-menu {
+    position: fixed;
+    top: 0;
+    right: -250px;
+    width: 250px;
+    height: 100%;
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    display: none;
+    transition: right 0.3s ease;
+    z-index: 5;
+}
+
+.sliding-menu.open {
+    right: 0;
+    display: block;
+}
+
+.menu-item {
+    display: block;
+    padding: 15px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.menu-item:hover {
+    background-color: #444;
+}
+/* Blogs Container - Grid Layout */
+.blogs {
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 2.8rem;
+    font-weight: 600;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+
+
+/* Individual Blog */
+.blog {
+    display: flex;
+    flex-direction: column;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.blog:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 15px rgba(255, 255, 255, 0.2);
+}
+
+.blog a {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Blog Image */
+.blog img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-bottom: 2px solid #333333;
+    transition: transform 0.3s ease;
+}
+
+.blog img:hover {
+    transform: scale(1.05);
+}
+
+/* Blog Content */
+.blog-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #e8e8e8;
+    padding: 10px 15px 5px;
+}
+
+.blog-destination {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #ff704e;
+    padding: 0 15px 10px;
+}
+
+
+        .menu-container {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            z-index: 10;
+            padding: 10px;
+        }
+
+        .group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .dot {
+            width: 5px;
+            height: 5px;
+            background-color: #e3e3e3;
+            border-radius: 50%;
+            margin: 2px 0;
+        }
+
+        .frame1.menu {
+            position: absolute;
+            bottom: 30px;
+            right: 0;
+            background-color: #303030;
+            box-shadow: 0 4px 6px rgba(16, 16, 16, 0.1);
+            visibility: visible;
+            z-index: 20;
+            border-radius: 10px;
+        }
+
+        .frame1.menu.hidden {
+            display: none;
+        }
+
+        .info a{
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            color: #e0e0e0;
+        }
+
+        .info:hover {
+            background-color: #121212;
+        }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .profile-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-right {
+        grid-template-columns: 1fr;
+        width: 100%;
+    }
+}

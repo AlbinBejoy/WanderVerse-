@@ -10,10 +10,12 @@
     <div class="blogs">
         {% for category, posts in results.items() %}
         <div class="category-row" id="row-{{ loop.index }}">
-            <h2 class="row-title">
-                {{ category }}
-            </h2>
-            <div class="blogs-row" id="blogs-row-{{ loop.index }}">
+            <div class="category-header">
+                <h2 class="row-title">{{ category }}</h2>
+                <!-- Show All Button -->
+                <a href="{{ url_for('category_details', category_name=category) }}" class="show-all">Show All</a>
+            </div>
+            <div class="blogs-row" id="blogs-row-{{ loop.index }}" >
                 {% for post, images_str in posts %}
                 <div class="blog" data-images="{{ images_str }}" style="position: relative;">
                     <a href="{{ url_for('posts', post_id=post.id) }}">

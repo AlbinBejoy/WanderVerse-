@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>{{ user.username }}'s Display Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/display.css') }}">
+{% endblock %}
+
+{% block body %}
+    <main class="profile-content">
+        <div class="profile-card">
+            <div class="profile-image" style="background-image: url('{{ url_for('static', filename='Images/' + (user.profile_pic if user.profile_pic else 'default.jpg')) }}');"></div>
+            <div class="profile-details">
+                <h1>{{ user.username }}</h1>
+                <p>Email: {{ user.email }}</p>
+            </div>
+        </div>
+    </main>
+
+    <h1>Blogs by {{ user.username }}</h1>
+    <div class="blogs">
+        {% for post, images_str in results %}
+            <div class="blog" data-images="{{ images_str }}">
+                <a href="{{ url_for('posts', post_id=post.id) }}">
+                    <img src="{{ url_for('static', filename='Images/' + (images_str.split(',')[0] if images_str else 'default.jpg')) }}" alt="Blog Image">
+                    <div class="blog-title">{{ post.title }}</div>
+                    <div class="blog-destination">{{ post.location }}</div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        // JavaScript to handle hover effect and image swapping
+        document.querySelectorAll('.blog').forEach(blog => {
+            const images = blog.dataset.images.split(',');
+            let currentIndex = 0;
+            const imgElement = blog.querySelector('.blog-image');
+
+            blog.addEventListener('mouseenter', () => {
+                currentIndex = 0; // Start cycling images on hover
+                blog.interval = setInterval(() => {
+                    currentIndex = (currentIndex + 1) % images.length;
+                    imgElement.src = `/static/Images/${images[currentIndex]}`;
+                }, 1000); // Change image every 1 second
+            });
+
+            blog.addEventListener('mouseleave', () => {
+                clearInterval(blog.interval);
+                imgElement.src = `/static/Images/${images[0]}`; // Reset to first image
+            });
+        });
+
+        // Function to toggle menu for a specific blog
+        function toggleMenu(menuContainer) {
+            // Close any other open menus
+            document.querySelectorAll('.frame1.menu').forEach(menu => {
+                if (!menuContainer.contains(menu)) {
+                    menu.classList.add('hidden');
+                }
+            });
+
+            // Toggle the visibility of the current menu
+            const menu = menuContainer.querySelector('.frame1.menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Close menu when clicking elsewhere
+        document.addEventListener('click', event => {
+            if (!event.target.closest('.menu-container')) {
+                document.querySelectorAll('.frame1.menu').forEach(menu => {
+                    menu.classList.add('hidden');
+                });
+            }
+        });
+    </script>
+{% endblock %}

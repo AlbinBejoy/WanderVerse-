@@ -1,4 +1,7 @@
 import pickle
+
+import flash
+
 from app import app
 from flask import render_template, request, redirect, url_for
 from app.utility_ai import *
@@ -105,6 +108,57 @@ def trash():
     return render_template('trash.html', results=results)
 
 
+
+@app.route('/profile', methods=['GET', 'POST'])
+def profile():
+    user_id = 1  # Placeholder for the logged-in user
+    user = db.session.query(User).filter_by(id=user_id).first()
+
+    if not user:
+        flash('User not found!', 'danger')
+        return redirect(url_for('my_blogs'))
+
+    if request.method == 'POST':
+        # Handle profile picture upload (Commented out for now)
+        """
+        if 'profile_pic' in request.files:
+            file = request.files['profile_pic']
+            if file and file.filename != '':
+                filename = secure_filename(file.filename)
+                file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                file.save(file_path)
+                user.profile_pic = filename
+                db.session.commit()
+                flash('Profile picture updated successfully!', 'success')
+        """
+        # Update username or other profile details
+        if request.form.get('username'):
+            user.username = request.form['username']
+            db.session.commit()
+            flash('Profile updated successfully!', 'success')
+
+        return redirect(url_for('profile'))
+    results = (
+        db.session.query(Post, db.func.group_concat(Images.image1))
+        .join(Images, Post.id == Images.post_id)
+        .filter(Post.user_id == user_id)
+        .filter(Post.trash == False)
+        .group_by(Post.id)
+        .all()
+    )
+
+    return render_template('profile.html', user=user,results=results)
+
+
+
+
+
+@app.route('/logout')
+def logout():
+    # Placeholder logout logic
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('create'))
+
 @app.route('/delete/<int:post_id>', methods=['GET', 'POST'])
 def delete(post_id):
     post = Post.query.get_or_404(post_id)
@@ -132,6 +186,21 @@ def delete_trash(post_id):
     db.session.commit()
     return redirect('/trash')
 
+
+@app.route('/display')
+def display():
+    user_id = 1  # Fixed user_id for retrieving data
+    user = User.query.get_or_404(user_id)
+    results = (
+        db.session.query(Post, db.func.group_concat(Images.image1).label('images'))
+        .join(Images, Post.id == Images.post_id)
+        .filter(Post.user_id == user_id, Post.trash == False)
+        .group_by(Post.id)
+        .all()
+    )
+    return render_template('display.html', user=user, results=results)
+
+
 @app.route('/categories', methods=['GET', 'POST'])
 def categories():
     user_id = 1
@@ -153,3 +222,16 @@ def categories():
 
     return render_template('categories.html', results=categories)
 
+@app.route('/category/<category_name>', methods=['GET'])
+def category_details(category_name):
+    user_id = 1
+    # Query all posts for the given category
+    results = (
+        db.session.query(Post, db.func.group_concat(Images.image1))
+        .join(Images, Post.id == Images.post_id)
+        .filter(Post.user_id == user_id, Post.trash == False, Post.Category == category_name)
+        .group_by(Post.id)
+        .all()
+    )
+
+    return render_template('category_details.html', category=category_name, posts=results)
