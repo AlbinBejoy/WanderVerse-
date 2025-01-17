@@ -11,12 +11,22 @@ from werkzeug.utils import secure_filename
 
 @app.route('/old')
 def hello_world():  # put application's code here
-    return render_template("main.html")
+    return render_template("logo.html")
 
 
 @app.route('/')
 def home():  # put application's code here
-    return render_template("creed.html")
+    results = (
+        db.session.query(Post, db.func.group_concat(Images.image1))
+        .join(Images, Post.id == Images.post_id)
+        .filter(Post.trash == False)
+        .group_by(Post.id)
+        .all()
+    )
+    return render_template('creed.html', results=results)
+
+
+
 
 
 @app.route('/create', methods=['GET', 'POST'])

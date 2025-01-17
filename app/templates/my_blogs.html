@@ -52,28 +52,6 @@
             });
         });
 
-        // Function to toggle menu for a specific blog
-        function toggleMenu(menuContainer) {
-            // Close any other open menus
-            document.querySelectorAll('.frame1.menu').forEach(menu => {
-                if (!menuContainer.contains(menu)) {
-                    menu.classList.add('hidden');
-                }
-            });
-
-            // Toggle the visibility of the current menu
-            const menu = menuContainer.querySelector('.frame1.menu');
-            menu.classList.toggle('hidden');
-        }
-
-        // Close menu when clicking elsewhere
-        document.addEventListener('click', event => {
-            if (!event.target.closest('.menu-container')) {
-                document.querySelectorAll('.frame1.menu').forEach(menu => {
-                    menu.classList.add('hidden');
-                });
-            }
-        });
     </script>
 {% endblock %}
 
