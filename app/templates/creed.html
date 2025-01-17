@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+{% extends 'base.html' %}
+
+{% block head %}
     <title>Title</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/creeds.css') }}">
-</head>
+{% endblock %}
+
+{% block body %}
     <body background="{{ url_for('static', filename='ui_images/N1.jpg') }}" style="background-repeat: no-repeat; background-size: cover; width: 100%; background-position: center; background-attachment: fixed; backdrop-filter: blur(5px); background-repeat: no-repeat;) "> >
 
 <div class="banner">
@@ -36,5 +37,4 @@
     </div>
 </div>
 
-</body>
-</html>
+{% endblock %}
