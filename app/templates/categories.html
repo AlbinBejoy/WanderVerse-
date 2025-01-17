@@ -13,7 +13,7 @@
             <h2 class="row-title">
                 {{ category }}
             </h2>
-            <div class="blogs-row" id="blogs-row-{{ loop.index }}">
+            <div class="blogs-row" id="blogs-row-{{ loop.index }}" >
                 {% for post, images_str in posts %}
                 <div class="blog" data-images="{{ images_str }}" style="position: relative;">
                     <a href="{{ url_for('posts', post_id=post.id) }}">
