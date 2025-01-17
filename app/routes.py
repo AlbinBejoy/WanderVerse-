@@ -8,7 +8,7 @@ from werkzeug.utils import secure_filename
 
 @app.route('/old')
 def hello_world():  # put application's code here
-    return render_template("front.html")
+    return render_template("logo.html")
 
 
 @app.route('/')
