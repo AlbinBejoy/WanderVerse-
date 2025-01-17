@@ -99,8 +99,9 @@ h1 {
     border-radius: 5px;
     cursor: pointer;
     font-size: 0.9rem;
-    float: right;
-    margin-left: 10px;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
 }
 
 .show-all:hover {
@@ -127,7 +128,7 @@ h1 {
     font-size: 1.8rem;
     font-weight: 600;
     color: #ffffff;
-    margin-bottom: 10px;
+    margin: 0;
 }
 
 /* Blogs Row - Horizontal Scrolling */
@@ -209,4 +210,11 @@ h1 {
 
 .arrow:hover {
     background-color: #ff5630;
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between; /* Positions items at opposite ends */
+    align-items: center; /* Vertically aligns items */
+    margin-bottom: 10px;
 }

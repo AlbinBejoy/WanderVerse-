@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>{{ category }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/my_blogs.css') }}">
+{% endblock %}
+
+{% block body %}
+<h1>{{ category }}</h1>
+<div class="blogs">
+    {% for post, images_str in posts %}
+    <div class="blog" data-images="{{ images_str }}" style="position: relative;">
+        <a href="{{ url_for('posts', post_id=post.id) }}">
+            <img src="{{ url_for('static', filename='Images/' + images_str.split(',')[0]) }}" alt="Blog Image" class="blog-image">
+            <div class="blog-title">{{ post.title }}</div>
+            <div class="blog-destination">{{ post.location }}</div>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

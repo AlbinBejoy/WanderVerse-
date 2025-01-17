@@ -153,3 +153,16 @@ def categories():
 
     return render_template('categories.html', results=categories)
 
+@app.route('/category/<category_name>', methods=['GET'])
+def category_details(category_name):
+    user_id = 1
+    # Query all posts for the given category
+    results = (
+        db.session.query(Post, db.func.group_concat(Images.image1))
+        .join(Images, Post.id == Images.post_id)
+        .filter(Post.user_id == user_id, Post.trash == False, Post.Category == category_name)
+        .group_by(Post.id)
+        .all()
+    )
+
+    return render_template('category_details.html', category=category_name, posts=results)
