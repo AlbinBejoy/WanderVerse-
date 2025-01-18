@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+
+{% block body %}
+<div class="profile-page">
+    <header class="profile-header">
+        <div class="hamburger-menu" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+
+    <main class="profile-content">
+        <div class="profile-container">
+            <!-- Profile Picture and Details -->
+            <div class="profile-left">
+                <div class="profile-image"></div>
+                <div class="profile-details">
+                    <h1>Your Name</h1>
+                    <p>Email ID</p>
+                </div>
+            </div>
+            <!-- Buttons -->
+            <div class="profile-right">
+                <a href="{{ url_for('my_blogs') }}" class="profile-button">Edit</a>
+                <a href="#" class="profile-button">Drafts</a>
+                <a href="{{ url_for('trash') }}" class="profile-button">Trash</a>
+                <a href="#" class="profile-button">Favorites</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Sliding Menu -->
+    <div id="menu" class="sliding-menu">
+        <a href="#" class="menu-item"><i class="fas fa-user-edit"></i> Edit Profile</a>
+        <a href="#" class="menu-item"><i class="fas fa-question-circle"></i> Help</a>
+        <a href="#" class="menu-item"><i class="fas fa-comments"></i> Feedback</a>
+        <a href="#" class="menu-item"><i class="fas fa-cogs"></i> Settings</a>
+        <a href="#" class="menu-item"><i class="fas fa-share-alt"></i> Share</a>
+        <a href="{{ url_for('logout') }}" class="menu-item"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+</div>
+    <div class="blogs">
+        {% for post, images_str in results %}
+            <div class="blog" data-images="{{ images_str }}">
+                <a href="{{ url_for('posts', post_id=post.id) }}">
+                    <img src="{{ url_for('static', filename='Images/' + (images_str.split(',')[0] if images_str else 'default.jpg')) }}" alt="Blog Image">
+                    <div class="blog-title">{{ post.title }}</div>
+                    <div class="blog-destination">{{ post.location }}</div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById('menu');
+        menu.classList.toggle('open');
+    }
+    // JavaScript to handle hover effect and image swapping
+        document.querySelectorAll('.blog').forEach(blog => {
+            const images = blog.dataset.images.split(',');
+            let currentIndex = 0;
+            const imgElement = blog.querySelector('.blog-image');
+
+            blog.addEventListener('mouseenter', () => {
+                currentIndex = 0; // Start cycling images on hover
+                blog.interval = setInterval(() => {
+                    currentIndex = (currentIndex + 1) % images.length;
+                    imgElement.src = `/static/Images/${images[currentIndex]}`;
+                }, 1000); // Change image every 1 second
+            });
+
+            blog.addEventListener('mouseleave', () => {
+                clearInterval(blog.interval);
+                imgElement.src = `/static/Images/${images[0]}`; // Reset to first image
+            });
+        });
+
+        // Function to toggle menu for a specific blog
+        function toggleMenu1(menuContainer) {
+            // Close any other open menus
+            document.querySelectorAll('.frame1.menu').forEach(menu => {
+                if (!menuContainer.contains(menu)) {
+                    menu.classList.add('hidden');
+                }
+            });
+
+            // Toggle the visibility of the current menu
+            const menu = menuContainer.querySelector('.frame1.menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Close menu when clicking elsewhere
+        document.addEventListener('click', event => {
+            if (!event.target.closest('.menu-container')) {
+                document.querySelectorAll('.frame1.menu').forEach(menu => {
+                    menu.classList.add('hidden');
+                });
+            }
+        });
+</script>
+{% endblock %}
