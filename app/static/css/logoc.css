@@ -31,7 +31,7 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1.5 rem;
+    gap: 1.5rem;
 }
 .loading-page svg {
     width: 500px;    /*  change this value to change the size of the svg */
@@ -63,6 +63,11 @@ svg path{
         stroke-dashoffset: 0;
     }
     
+}
+
+.name-container{
+    height: 30px;
+    overflow: hidden;
 }
 
 .logo-name{
