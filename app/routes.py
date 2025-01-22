@@ -1,7 +1,4 @@
-import pickle
-
 import flash
-
 from app import app
 from flask import render_template, request, redirect, url_for
 from app.utility_ai import *
@@ -17,15 +14,13 @@ def hello_world():  # put application's code here
 @app.route('/')
 def home():  # put application's code here
     results = (
-        db.session.query(Post, db.func.group_concat(Images.image1))
-        .join(Images, Post.id == Images.post_id)
-        .filter(Post.trash == False)
+        db.session.query(Post, db.func.coalesce(db.func.group_concat(Images.image1), ''))
+        .outerjoin(Images, Post.id == Images.post_id)
+        .filter(Post.status == 'live')
         .group_by(Post.id)
         .all()
     )
     return render_template('creed.html', results=results)
-
-
 
 
 
@@ -37,16 +32,9 @@ def create():
         if not task:
             return "Task content is required", 400
 
-        check = moderate(task)
-        if not check.Flagged:
-            # Create task and save to database
-            add = make(task)
-            db.session.add(add)
-            db.session.commit()
-            post_id = add.id
-        else:
-            db.session.add(check)
-            db.session.commit()
+        add = make(task)
+        post_id=add.id
+        if add.status=='Flagged':
             return redirect('/flagged')
 
         # Handle multiple image uploads
@@ -71,33 +59,52 @@ def create():
 
         # Commit all image records
         db.session.commit()
-
         return redirect('/posts/{post_id}'.format(post_id=post_id))
 
     return render_template('creat_page.html')
-
-
 @app.route('/flagged')
 def flagged():
     return render_template('moderate.html')
 
 
+
+
+
 @app.route('/posts/<int:post_id>', methods=['GET', 'POST'])
 def posts(post_id):
+    # Get the post from the database
     post = Post.query.get_or_404(post_id)
-    highlights = pickle.loads(post.highlight)
+
+    # Retrieve highlights, activities, and places visited from the database
+    highlights = Highlight.query.filter_by(post_id=post_id).all()
+    activities = Activities.query.filter_by(post_id=post_id).all()
+    places_visited = PlacesVisited.query.filter_by(post_id=post_id).all()
+
+    # Retrieve images associated with the post (if any)
     images = Images.query.filter_by(post_id=post_id).all()
-    return render_template('post.html', post=post, images=images, highlights=highlights)
 
+    # Prepare the data to pass to the template
+    highlights_text = [highlight.highlight for highlight in highlights]
+    activities_text = [activity.activity for activity in activities]
+    places_visited_text = [place.place for place in places_visited]
 
+    # Render the template with the retrieved data
+    return render_template(
+        'post.html',
+        post=post,
+        images=images,
+        highlights=highlights_text,
+        activities=activities_text,
+        places_visited=places_visited_text
+    )
 @app.route('/My_blogs', methods=['GET', 'POST'])
 def my_blogs():
     user_id = 1
     results = (
-        db.session.query(Post, db.func.group_concat(Images.image1))
-        .join(Images, Post.id == Images.post_id)
+        db.session.query(Post, db.func.coalesce(db.func.group_concat(Images.image1), ''))
+        .outerjoin(Images, Post.id == Images.post_id)
         .filter(Post.user_id == user_id)
-        .filter(Post.trash == False)
+        .filter(Post.status == 'live')
         .group_by(Post.id)
         .all()
     )
@@ -108,15 +115,14 @@ def my_blogs():
 def trash():
     user_id = 1
     results = (
-        db.session.query(Post, db.func.group_concat(Images.image1))
-        .join(Images, Post.id == Images.post_id)
+        db.session.query(Post, db.func.coalesce(db.func.group_concat(Images.image1), ''))
+        .outerjoin(Images, Post.id == Images.post_id)
         .filter(Post.user_id == user_id)
-        .filter(Post.trash == True)
+        .filter(Post.status == 'trash')
         .group_by(Post.id)
         .all()
     )
     return render_template('trash.html', results=results)
-
 
 
 @app.route('/profile', methods=['GET', 'POST'])
@@ -129,82 +135,64 @@ def profile():
         return redirect(url_for('my_blogs'))
 
     if request.method == 'POST':
-        # Handle profile picture upload (Commented out for now)
-        """
-        if 'profile_pic' in request.files:
-            file = request.files['profile_pic']
-            if file and file.filename != '':
-                filename = secure_filename(file.filename)
-                file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                file.save(file_path)
-                user.profile_pic = filename
-                db.session.commit()
-                flash('Profile picture updated successfully!', 'success')
-        """
-        # Update username or other profile details
         if request.form.get('username'):
             user.username = request.form['username']
             db.session.commit()
             flash('Profile updated successfully!', 'success')
 
         return redirect(url_for('profile'))
+
     results = (
-        db.session.query(Post, db.func.group_concat(Images.image1))
-        .join(Images, Post.id == Images.post_id)
+        db.session.query(Post, db.func.coalesce(db.func.group_concat(Images.image1), ''))
+        .outerjoin(Images, Post.id == Images.post_id)
         .filter(Post.user_id == user_id)
-        .filter(Post.trash == False)
+        .filter(Post.status == 'live')
         .group_by(Post.id)
         .all()
     )
 
-    return render_template('profile.html', user=user,results=results)
+    return render_template('profile.html', user=user, results=results)
 
-
-
-
-
-@app.route('/logout')
-def logout():
-    # Placeholder logout logic
-    flash('You have been logged out.', 'info')
-    return redirect(url_for('create'))
 
 @app.route('/delete/<int:post_id>', methods=['GET', 'POST'])
 def delete(post_id):
     post = Post.query.get_or_404(post_id)
-    post.trash = True
+    post.status = 'trash'  # Updated to set 'status' to 'trash'
     db.session.add(post)
     db.session.commit()
-    return redirect('/My_blogs')
+    return redirect('/profile')
 
 
 @app.route('/restore/<int:post_id>', methods=['GET', 'POST'])
 def restore(post_id):
     post = Post.query.get_or_404(post_id)
-    post.trash = False
+    post.status = 'live'  # Updated to set 'status' to 'draft'
     db.session.add(post)
     db.session.commit()
-    return redirect('/My_blogs')
+    return redirect('/profile')
 
 
 @app.route('/delete_trash/<int:post_id>', methods=['GET', 'POST'])
 def delete_trash(post_id):
     post = Post.query.get_or_404(post_id)
-    img = Images.query.filter_by(post_id=post_id).first_or_404()
-    db.session.delete(img)
+    images = Images.query.filter_by(post_id=post_id).all()  # Fetch all images related to the post
+
+    for image in images:
+        db.session.delete(image)
+
     db.session.delete(post)
     db.session.commit()
-    return redirect('/trash')
+    return redirect(request.referrer or '/trash')  # Redirect to the referring page or fallback to '/trash'
 
 
-@app.route('/display')
-def display():
-    user_id = 1  # Fixed user_id for retrieving data
+@app.route('/display/<int:user_id>')
+def display(user_id):
     user = User.query.get_or_404(user_id)
     results = (
-        db.session.query(Post, db.func.group_concat(Images.image1).label('images'))
-        .join(Images, Post.id == Images.post_id)
-        .filter(Post.user_id == user_id, Post.trash == False)
+        db.session.query(Post, db.func.coalesce(db.func.group_concat(Images.image1), ''))
+        .outerjoin(Images, Post.id == Images.post_id)
+        .filter(Post.user_id == user_id)
+        .filter(Post.status == 'live')
         .group_by(Post.id)
         .all()
     )
@@ -213,12 +201,11 @@ def display():
 
 @app.route('/categories', methods=['GET', 'POST'])
 def categories():
-    user_id = 1
     # Query posts and associated images
     results = (
         db.session.query(Post, db.func.group_concat(Images.image1))
         .join(Images, Post.id == Images.post_id)
-        .filter(Post.user_id == user_id, Post.trash == False)
+        .filter(Post.status == 'live')  # No user-specific filtering
         .group_by(Post.id)
         .all()
     )
@@ -226,20 +213,21 @@ def categories():
     # Group posts by category
     categories = {}
     for post, images_str in results:
-        if post.Category not in categories:
-            categories[post.Category] = []
-        categories[post.Category].append((post, images_str))
-
+        if post.category:  # Ensure category is not None or empty
+            if post.category not in categories:
+                categories[post.category] = []
+            categories[post.category].append((post, images_str))
     return render_template('categories.html', results=categories)
+
+
 
 @app.route('/category/<category_name>', methods=['GET'])
 def category_details(category_name):
-    user_id = 1
-    # Query all posts for the given category
+    # Query all posts for the given category (removed user_id filter)
     results = (
         db.session.query(Post, db.func.group_concat(Images.image1))
         .join(Images, Post.id == Images.post_id)
-        .filter(Post.user_id == user_id, Post.trash == False, Post.Category == category_name)
+        .filter(Post.status == 'live', Post.category == category_name)  # Filter category and non-trashed posts
         .group_by(Post.id)
         .all()
     )

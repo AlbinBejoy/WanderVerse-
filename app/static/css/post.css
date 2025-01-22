@@ -32,7 +32,9 @@ body {
 /* Section Styles */
 .post-details,
 .post-extra,
-.post-highlights {
+.post-highlights,
+.post-activities,
+.post-places-visited {
     background-color: #1e1e1e;
     padding: 20px;
     border-radius: 8px;
@@ -41,7 +43,9 @@ body {
 
 .post-details h3,
 .post-extra h3,
-.post-highlights h3 {
+.post-highlights h3,
+.post-activities h3,
+.post-places-visited h3 {
     font-size: 1.4rem;
     font-weight: 400;
     color: #ff704e;
@@ -49,7 +53,8 @@ body {
 }
 
 .post-details p,
-.post-extra p {
+.post-extra p,
+.post-places-visited p {
     font-size: 1rem;
     font-weight: 300;
 }
@@ -87,6 +92,29 @@ body {
     text-align: left;
     font-size: 1rem;
     font-weight: 300;
+}
+
+/* Activities Section */
+.post-activities ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.post-activities li {
+    font-size: 1rem;
+    font-weight: 300;
+    background-color: #2a2a2a;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #333333;
+}
+.post-places-visited h3{
+    color: #ff704e;
+}
+
+.post-places-visited p {
+    line-height: 1.8;
 }
 
 /* Extra Section */

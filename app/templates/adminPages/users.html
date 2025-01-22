@@ -35,7 +35,9 @@
                         <td>{{ user.email }}</td>
                         <td>
                             <button class="action-btn">View</button>
-                            <button class="action-btn delete-btn">Delete</button>
+                            <form action="{{ url_for('delete_user', user_id=user.id) }}" method="post" style="display:inline;">
+                                <button type="submit" class="action-btn delete-btn">Delete</button>
+                            </form>
                         </td>
                     </tr>
                     {% endfor %}

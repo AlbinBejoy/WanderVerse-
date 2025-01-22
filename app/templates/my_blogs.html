@@ -52,6 +52,23 @@
             });
         });
 
+        function toggleMenu(element) {
+            // Find the menu element inside the clicked container
+            const menu = element.querySelector('.menu');
+
+            // Toggle the 'hidden' class to show or hide the menu
+            if (menu) {
+                menu.classList.toggle('hidden');
+            }
+
+            // Close other open menus (optional, if only one menu should be open at a time)
+            document.querySelectorAll('.menu-container .menu').forEach(otherMenu => {
+                if (otherMenu !== menu && !otherMenu.classList.contains('hidden')) {
+                    otherMenu.classList.add('hidden');
+                }
+            });
+        }
+
     </script>
 {% endblock %}
 

@@ -6,16 +6,38 @@
 {% endblock %}
 
 {% block body %}
-<h1>{{ category }}</h1>
-<div class="blogs">
-    {% for post, images_str in posts %}
-    <div class="blog" data-images="{{ images_str }}" style="position: relative;">
-        <a href="{{ url_for('posts', post_id=post.id) }}">
-            <img src="{{ url_for('static', filename='Images/' + images_str.split(',')[0]) }}" alt="Blog Image" class="blog-image">
-            <div class="blog-title">{{ post.title }}</div>
-            <div class="blog-destination">{{ post.location }}</div>
-        </a>
+    <h1>{{ category }}</h1>
+    <div class="blogs">
+        {% for post, images_str in posts %}
+        <div class="blog" data-images="{{ images_str }}" style="position: relative;">
+            <a href="{{ url_for('posts', post_id=post.id) }}">
+                <img src="{{ url_for('static', filename='Images/' + images_str.split(',')[0]) }}" alt="Blog Image" class="blog-image">
+                <div class="blog-title">{{ post.title }}</div>
+                <div class="blog-destination">{{ post.location }}</div>
+            </a>
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
-</div>
+
+    <script>
+        // JavaScript to handle hover effect and image swapping
+        document.querySelectorAll('.blog').forEach(blog => {
+            const images = blog.dataset.images.split(',');
+            let currentIndex = 0;
+            const imgElement = blog.querySelector('.blog-image');
+
+            blog.addEventListener('mouseenter', () => {
+                currentIndex = 0; // Start cycling images on hover
+                blog.interval = setInterval(() => {
+                    currentIndex = (currentIndex + 1) % images.length;
+                    imgElement.src = `/static/Images/${images[currentIndex]}`;
+                }, 1000); // Change image every 1 second
+            });
+
+            blog.addEventListener('mouseleave', () => {
+                clearInterval(blog.interval);
+                imgElement.src = `/static/Images/${images[0]}`; // Reset to first image
+            });
+        });
+    </script>
 {% endblock %}

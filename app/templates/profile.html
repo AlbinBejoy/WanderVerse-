@@ -17,7 +17,7 @@
         <div class="profile-container">
             <!-- Profile Picture and Details -->
             <div class="profile-left">
-                <div class="profile-image"></div>
+                <div class="profile-image"> <img src="{{ url_for('static', filename='Images/' + user.profile_pic) }}" alt="Profile Picture" class="profile-image"></div>
                 <div class="profile-details">
                     <h1>Your Name</h1>
                     <p>Email ID</p>
@@ -40,9 +40,10 @@
         <a href="#" class="menu-item"><i class="fas fa-comments"></i> Feedback</a>
         <a href="#" class="menu-item"><i class="fas fa-cogs"></i> Settings</a>
         <a href="#" class="menu-item"><i class="fas fa-share-alt"></i> Share</a>
-        <a href="{{ url_for('logout') }}" class="menu-item"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        <a href="" class="menu-item"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </div>
 </div>
+    <div class="myblogs">My Blogs :</div>
     <div class="blogs">
         {% for post, images_str in results %}
             <div class="blog" data-images="{{ images_str }}">
@@ -51,6 +52,17 @@
                     <div class="blog-title">{{ post.title }}</div>
                     <div class="blog-destination">{{ post.location }}</div>
                 </a>
+                <!-- Menu button inside each blog -->
+                <div class="menu-container" onclick="toggleMenu1(this)">
+                    <div class="group">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                    <div class="frame1 menu hidden">
+                        <div class="info"><span><a href="{{ url_for('delete', post_id=post.id) }}">Delete</a></span></div>
+                    </div>
+                </div>
             </div>
         {% endfor %}
     </div>

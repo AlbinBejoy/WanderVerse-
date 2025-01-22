@@ -28,17 +28,34 @@
         <section class="post-highlights">
             <h3>Daily Highlights:</h3>
             <table>
-                {% for day in highlights %}
+                {% for highlight in highlights %}
                     <tr>
-                        <td>{{ day }}</td>
+                        <td>{{ highlight }}</td>
                     </tr>
                 {% endfor %}
             </table>
         </section>
 
+        <section class="post-places-visited">
+            <h3>Places Visited:</h3>
+            <p>
+                {% for place in places_visited %}
+                    {{ place }}{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+        </section>
+
+
+        <section class="post-activities">
+            <h3>Activities:</h3>
+            <ul>
+                {% for activity in activities %}
+                    <li>{{ activity }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+
         <section class="post-extra">
-            <h3>Top Attractions:</h3>
-            <p>{{ post.top_attractions }}</p>
             <h3>Tips:</h3>
             <p>{{ post.tips }}</p>
         </section>
