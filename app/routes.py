@@ -233,3 +233,25 @@ def category_details(category_name):
     )
 
     return render_template('category_details.html', category=category_name, posts=results)
+
+
+@app.route('/edit_profile', methods=['GET', 'POST'])
+def edit_profile():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        email = request.form.get('email')
+        phone_number = request.form.get('phone_number')
+        additional_info = request.form.get('additional_info')
+
+        # Handle profile picture upload
+        profile_pic = request.files.get('profile_picture')
+        if profile_pic:
+            filename = secure_filename(profile_pic.filename)
+            profile_pic.save(os.path.join('static/profile_pics', filename))
+
+        # Save updated info to the database here (not included, depends on models)
+        # Update user information in your database
+
+        return redirect(url_for('profile'))  # Redirect to the profile page
+
+    return render_template('edit_profile.html')
