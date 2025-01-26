@@ -7,6 +7,7 @@
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     color: #fff;
+    font-family: 'Arial', sans-serif;
 }
 
 /* Header Styling */
@@ -33,13 +34,14 @@
 .form-group input[type="email"],
 .form-group input[type="tel"],
 .form-group input[type="file"] {
-    width: 90%;
+    width: 100%;
     padding: 10px;
     font-size: 1rem;
     border: 1px solid #555;
     border-radius: 5px;
     background-color: #2a2a3c;
     color: #fff;
+    margin-bottom: 10px;
 }
 
 .form-group input[type="text"]::placeholder,
@@ -48,8 +50,16 @@
     color: #999;
 }
 
-/* Save Button */
+/* Profile Picture Preview */
+.form-group img {
+    display: block;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 2px solid #ff704e;
+}
+
 .save-button {
+    display: inline-block;
     padding: 12px;
     font-size: 1.2rem;
     color: #fff;
@@ -58,16 +68,35 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    align-items: center;
-    justify-content: center;
-    position: relative;
     text-align: center;
-    width: 200px;
-    margin: 0 auto;
-    display: block;
+    text-decoration: none;
+    width: 100%;
+    margin-top: 20px;
 }
 
 .save-button:hover {
-    background-color: #ff704e;
+    background-color: #e65a3a;
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
+    .edit-profile-container {
+        margin: 20px;
+        padding: 15px;
+    }
+
+    .edit-profile-container h1 {
+        font-size: 1.5rem;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="tel"],
+    .form-group input[type="file"] {
+        font-size: 0.9rem;
+    }
+
+    .save-button {
+        font-size: 1rem;
+    }
+}

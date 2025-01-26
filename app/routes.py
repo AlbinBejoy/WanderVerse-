@@ -153,7 +153,6 @@ def profile():
 
     return render_template('profile.html', user=user, results=results)
 
-
 @app.route('/delete/<int:post_id>', methods=['GET', 'POST'])
 def delete(post_id):
     post = Post.query.get_or_404(post_id)
@@ -237,21 +236,33 @@ def category_details(category_name):
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
 def edit_profile():
+    user_id = 1  # Placeholder for the logged-in user
+    user = User.query.get_or_404(user_id)
+
     if request.method == 'POST':
-        username = request.form.get('username')
-        email = request.form.get('email')
-        phone_number = request.form.get('phone_number')
-        additional_info = request.form.get('additional_info')
+        try:
+            # Update user information from the form
+            user.username = request.form.get('username')
+            user.email = request.form.get('email')
+            user.phone_number = request.form.get('phone_number')
 
-        # Handle profile picture upload
-        profile_pic = request.files.get('profile_picture')
-        if profile_pic:
-            filename = secure_filename(profile_pic.filename)
-            profile_pic.save(os.path.join('static/profile_pics', filename))
+            # Handle profile picture upload
+            profile_pic = request.files.get('profile_picture')
+            if profile_pic and profile_pic.filename != '':
+                # Secure the filename and save the file
+                filename = secure_filename(profile_pic.filename)
+                profile_pic_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                profile_pic.save(profile_pic_path)
+                user.profile_pic = filename  # Update the profile_pic field in the database
 
-        # Save updated info to the database here (not included, depends on models)
-        # Update user information in your database
+            # Commit changes to the database
+            db.session.commit()
+            flash('Profile updated successfully!', 'success')
+            return redirect(url_for('profile'))  # Redirect to the profile page
 
-        return redirect(url_for('profile'))  # Redirect to the profile page
+        except Exception as e:
+            db.session.rollback()  # Rollback in case of error
+            flash(f'An error occurred: {str(e)}', 'danger')
+            app.logger.error(f'Error updating profile: {str(e)}')  # Log the error
 
-    return render_template('edit_profile.html')
+    return render_template('edit_profile.html', user=user)
