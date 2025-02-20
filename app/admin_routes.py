@@ -26,7 +26,7 @@ def flags():
     flagged = (
         db.session.query(User, Post)
         .join(Post, User.id == Post.user_id)
-        .filter(Post.status == 'flagged')  # Use 'flagged' status for flagged posts
+        .filter(Post.status == 'Flagged')  # Use 'flagged' status for flagged posts
         .all()
     )
     return render_template('adminPages/flagged.html', flagged=flagged)

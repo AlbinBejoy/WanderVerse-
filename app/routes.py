@@ -1,9 +1,95 @@
-import flash
+from flask import flash
 from app import app
+from app import login_manager
 from flask import render_template, request, redirect, url_for
 from app.utility_ai import *
 from app.models import *
 from werkzeug.utils import secure_filename
+from flask_login import login_user, login_required, logout_user, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        phone_number = request.form['phone_number']
+
+        # Handle profile picture upload
+        profile_pic = 'profile.jpg'  # default image
+        if 'profile_pic' in request.files:
+            file = request.files['profile_pic']
+            if file:
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                profile_pic = filename
+
+        # Validate unique fields
+        if User.query.filter_by(username=username).first():
+            flash('Username already exists!')
+            return redirect(url_for('register'))
+
+        if User.query.filter_by(email=email).first():
+            flash('Email already registered!')
+            return redirect(url_for('register'))
+
+        if User.query.filter_by(phone_number=phone_number).first():
+            flash('Phone number already registered!')
+            return redirect(url_for('register'))
+
+        # Create new user
+        hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
+        new_user = User(
+            username=username,
+            email=email,
+            password=hashed_password,
+            phone_number=phone_number,
+            profile_pic=profile_pic
+        )
+
+        try:
+            db.session.add(new_user)
+            db.session.commit()
+            flash('Registration successful! Please login.')
+            return redirect(url_for('login'))
+        except Exception as e:
+            db.session.rollback()
+            flash('An error occurred during registration. Please try again.')
+            return redirect(url_for('register'))
+
+    return render_template('register.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        remember = 'remember' in request.form
+
+        user = User.query.filter_by(username=username).first()
+
+        if user and check_password_hash(user.password, password):
+            login_user(user, remember=remember)
+            next_page = request.args.get('next')
+            flash('Logged in successfully!')
+            return redirect(next_page) if next_page else redirect(url_for('home'))
+        else:
+            flash('Invalid username or password!')
+
+    return render_template('login.html')
 
 
 @app.route('/old')
@@ -25,6 +111,7 @@ def home():  # put application's code here
 
 
 @app.route('/create', methods=['GET', 'POST'])
+@login_required
 def create():
     if request.method == 'POST':
         # Validate task content
@@ -51,7 +138,7 @@ def create():
 
                 # Save file info to database
                 img = Images(
-                    user_id=1,  # Replace with the current logged-in user ID
+                    user_id=current_user.get_id(),  # Replace with the current logged-in user ID
                     post_id=post_id,
                     image1=filename  # Update field name to match your database
                 )
@@ -74,6 +161,7 @@ def flagged():
 def posts(post_id):
     # Get the post from the database
     post = Post.query.get_or_404(post_id)
+    user=User.query.get_or_404(post.user_id)
 
     # Retrieve highlights, activities, and places visited from the database
     highlights = Highlight.query.filter_by(post_id=post_id).all()
@@ -91,6 +179,7 @@ def posts(post_id):
     # Render the template with the retrieved data
     return render_template(
         'post.html',
+        user=user,
         post=post,
         images=images,
         highlights=highlights_text,
@@ -112,8 +201,9 @@ def my_blogs():
 
 
 @app.route('/trash', methods=['GET', 'POST'])
+@login_required
 def trash():
-    user_id = 1
+    user_id = current_user.get_id()
     results = (
         db.session.query(Post, db.func.coalesce(db.func.group_concat(Images.image1), ''))
         .outerjoin(Images, Post.id == Images.post_id)
@@ -126,8 +216,9 @@ def trash():
 
 
 @app.route('/profile', methods=['GET', 'POST'])
+@login_required
 def profile():
-    user_id = 1  # Placeholder for the logged-in user
+    user_id = current_user.get_id()  # Placeholder for the logged-in user
     user = db.session.query(User).filter_by(id=user_id).first()
 
     if not user:
@@ -185,6 +276,7 @@ def delete_trash(post_id):
 
 
 @app.route('/display/<int:user_id>')
+@login_required
 def display(user_id):
     user = User.query.get_or_404(user_id)
     results = (
@@ -199,12 +291,14 @@ def display(user_id):
 
 
 @app.route('/categories', methods=['GET', 'POST'])
+@login_required
 def categories():
-    # Query posts and associated images
+    user_id = current_user.get_id()
     results = (
         db.session.query(Post, db.func.group_concat(Images.image1))
         .join(Images, Post.id == Images.post_id)
-        .filter(Post.status == 'live')  # No user-specific filtering
+        .filter(Post.status == 'live')
+        .filter(Post.user_id!=user_id)# No user-specific filtering
         .group_by(Post.id)
         .all()
     )
@@ -221,12 +315,15 @@ def categories():
 
 
 @app.route('/category/<category_name>', methods=['GET'])
+@login_required
 def category_details(category_name):
+    user_id = current_user.get_id()
     # Query all posts for the given category (removed user_id filter)
     results = (
         db.session.query(Post, db.func.group_concat(Images.image1))
         .join(Images, Post.id == Images.post_id)
-        .filter(Post.status == 'live', Post.category == category_name)  # Filter category and non-trashed posts
+        .filter(Post.status == 'live', Post.category == category_name)
+        .filter(Post.user_id!=user_id)# Filter category and non-trashed posts
         .group_by(Post.id)
         .all()
     )
@@ -235,8 +332,9 @@ def category_details(category_name):
 
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
 def edit_profile():
-    user_id = 1  # Placeholder for the logged-in user
+    user_id = current_user.get_id() # Placeholder for the logged-in user
     user = User.query.get_or_404(user_id)
 
     if request.method == 'POST':
@@ -266,3 +364,11 @@ def edit_profile():
             app.logger.error(f'Error updating profile: {str(e)}')  # Log the error
 
     return render_template('edit_profile.html', user=user)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out.')
+    return redirect(url_for('login'))

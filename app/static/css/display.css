@@ -1,19 +1,21 @@
-.profile-content {
+.profile-content{
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    width: 100%;
-    max-width: 1200px;
-    margin-top: 30px;
-    gap: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    width: 90%; /* Allow it to adapt */
+    max-width: 1200px; /* Cap the width */
+    height: 350px;
+    gap: 20px;
     flex-wrap: wrap;
+    justify-content: center;
+    margin: auto; /* Ensures horizontal centering */
 }
 
 .profile-card {
-    background: rgba(255, 255, 255, 0.1);
     padding: 20px;
     border-radius: 15px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
     text-align: center;
     width: 300px;
     flex: 1 1 300px;

@@ -28,6 +28,16 @@ body {
     margin-bottom: 20px;
     padding-bottom: 10px;
 }
+.post-header h2,
+.post-header h2 a{
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #a1a1a1;
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    text-decoration: none;
+}
 
 /* Section Styles */
 .post-details,
