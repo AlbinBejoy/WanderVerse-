@@ -1,3 +1,5 @@
+import json
+import easyocr
 from flask import flash
 from app import app
 from app import login_manager
@@ -7,6 +9,8 @@ from app.models import *
 from werkzeug.utils import secure_filename
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -149,6 +153,52 @@ def create():
         return redirect('/posts/{post_id}'.format(post_id=post_id))
 
     return render_template('creat_page.html')
+
+
+@app.route('/process_ocr', methods=['POST'])
+@login_required
+def process_ocr():
+    if 'image' not in request.files:
+        return json.dumps({'error': 'No file part'}), 400, {'Content-Type': 'application/json'}
+
+    file = request.files['image']
+    if file.filename == '':
+        return json.dumps({'error': 'No selected file'}), 400, {'Content-Type': 'application/json'}
+
+    if file and allowed_file(file.filename):
+        # Secure the filename
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+        # Save the file temporarily
+        file.save(file_path)
+
+        try:
+            # Perform OCR with EasyOCR
+            reader = easyocr.Reader(['en'])  # Specify languages as needed
+            result = reader.readtext(file_path, detail=0)
+            text = " ".join(result)
+
+            # Clean up the file after processing
+            os.remove(file_path)
+
+            return json.dumps({
+                'success': True,
+                'text': text
+            }), 200, {'Content-Type': 'application/json'}
+        except Exception as e:
+            if os.path.exists(file_path):
+                os.remove(file_path)
+            return json.dumps({'error': str(e)}), 500, {'Content-Type': 'application/json'}
+    else:
+        return json.dumps({'error': 'File type not allowed'}), 400, {'Content-Type': 'application/json'}
+
+
+# Helper function to check allowed file types
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'tiff', 'bmp'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 @app.route('/flagged')
 def flagged():
     return render_template('moderate.html')

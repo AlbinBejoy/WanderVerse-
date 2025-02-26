@@ -12,8 +12,53 @@
             input.accept = 'image/*';
             container.appendChild(input);
         }
+
+        function processOCR(fileInput) {
+            if (!fileInput.files || fileInput.files.length === 0) {
+                alert('Please select an image first');
+                return;
+            }
+
+            // Show loader
+            const loader = document.querySelector('.load');
+            loader.classList.remove('hidden');
+
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append('image', file);
+
+            fetch('/process_ocr', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide loader
+                loader.classList.add('hidden');
+
+                if (data.error) {
+                    alert('Error: ' + data.error);
+                } else {
+                    // Get current text in textarea
+                    const textarea = document.getElementById('content');
+                    const currentText = textarea.value;
+
+                    // Append extracted text to textarea with a newline if needed
+                    if (currentText && !currentText.endsWith('\n')) {
+                        textarea.value = currentText + '\n' + data.text;
+                    } else {
+                        textarea.value = currentText + data.text;
+                    }
+                }
+            })
+            .catch(error => {
+                // Hide loader
+                loader.classList.add('hidden');
+                alert('Error: ' + error.message);
+            });
+        }
     </script>
-     <link rel="stylesheet" href="{{ url_for('static', filename='css/create.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/create.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -33,6 +78,13 @@
             <button type="button" class="add-btn" onclick="addImageInput()">Add Another Image</button>
         </div>
 
+        <div class="form-group">
+            <label class="label">OCR: Extract text from image</label>
+           <input type="file" id="ocr-image" accept="image/*" class="file-input" onchange="document.getElementById('extract-btn').disabled = !this.value">
+            <button type="button" id="extract-btn" class="add-btn" onclick="processOCR(document.getElementById('ocr-image'))" disabled>Extract Text</button>
+            <p class="ocr-note">This will extract text from the image and add it to your post.</p>
+        </div>
+
         <input type="submit" value="Post" class="submit-btn">
     </form>
 </div>
@@ -40,12 +92,10 @@
     <img src="static/ui_images/load.gif" alt="Loading..." width="200px" height="200px">
 </div>
 
-
-
-    <script>
-    function load() {
+<script>
+function load() {
     const loader = document.querySelector('.load');
     loader.classList.remove('hidden'); // Remove the hidden class to show the loader
 }
-    </script>
+</script>
 {% endblock %}

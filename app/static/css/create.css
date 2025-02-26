@@ -129,3 +129,27 @@ main {
 .hidden {
     display: none;
 }
+
+.ocr-note {
+    font-size: 0.8rem;
+    color: #a0a0a0;
+    margin-top: 0.5rem;
+}
+
+/* Disable button styling */
+button:disabled {
+    background-color: #4a4a4a;
+    color: #7a7a7a;
+    cursor: not-allowed;
+}
+
+/* Animation for OCR processing */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.processing {
+    animation: pulse 1.5s infinite;
+}
