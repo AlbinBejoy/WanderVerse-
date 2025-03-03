@@ -117,13 +117,16 @@ def home():  # put application's code here
 @app.route('/create', methods=['GET', 'POST'])
 @login_required
 def create():
+    user_id = current_user.get_id()
+    post = None #Initialize post variable
+
     if request.method == 'POST':
         # Validate task content
         task = request.form.get('content')
         if not task:
             return "Task content is required", 400
 
-        add = make(task)
+        add = make(task,user_id=user_id)
         post_id=add.id
         if add.status=='Flagged':
             return redirect('/flagged')
@@ -152,7 +155,12 @@ def create():
         db.session.commit()
         return redirect('/posts/{post_id}'.format(post_id=post_id))
 
-    return render_template('creat_page.html')
+        # Check if editing an existing draft
+        post_id = request.args.get('post_id')
+        if post_id:
+            post = Post.query.get_or_404(post_id)
+
+    return render_template('creat_page.html', post=post)
 
 
 @app.route('/process_ocr', methods=['POST'])
@@ -300,7 +308,7 @@ def delete(post_id):
     post.status = 'trash'  # Updated to set 'status' to 'trash'
     db.session.add(post)
     db.session.commit()
-    return redirect('/profile')
+    return redirect(request.referrer)
 
 
 @app.route('/restore/<int:post_id>', methods=['GET', 'POST'])
@@ -414,6 +422,87 @@ def edit_profile():
             app.logger.error(f'Error updating profile: {str(e)}')  # Log the error
 
     return render_template('edit_profile.html', user=user)
+
+@app.route('/save_draft', methods=['POST'])
+def save_draft():
+    user_id = current_user.get_id()
+    content = request.form.get('content')
+    post_id = request.form.get('post_id')  # Get post_id if editing an existing draft
+    print(f"Save draft called with user_id: {user_id}, content: {content}")  # Log input parameters
+    new_draft = draft(content, user_id=user_id,post_id=post_id)
+    if new_draft:
+        return json.dumps({'success': True}), 200
+    else:
+        return json.dumps({'success': False, 'error': 'Failed to save draft.'}), 500
+
+
+@app.route('/my_drafts')
+@login_required  # Ensure the user is logged in
+def my_drafts():
+    # Fetch drafts from the database for the current user
+    drafts = Post.query.filter_by(user_id=current_user.id, status='draft').all()
+
+    # Fetch images for each draft
+    results = []
+    for draft in drafts:
+        images = Images.query.filter_by(post_id=draft.id).all()  # Get images associated with the draft
+        images_str = ','.join([img.image1 for img in images])  # Create a comma-separated string of image paths
+        results.append((draft, images_str))  # Append the draft and its images to results
+
+    return render_template('my_drafts.html', results=results)
+@app.route('/edit_draft/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def edit_draft(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.user_id != current_user.id:
+        abort(403)  # Forbidden if the user does not own the draft
+
+    # Fetch images associated with the post
+    images = Images.query.filter_by(post_id=post_id).all()
+
+    if request.method == 'POST':
+        # Update the post with new data
+        post.content = request.form['content']  # Always update content
+
+        # Handle image uploads
+        files = request.files.getlist('images')
+        for file in files:
+            if file and file.filename != '':
+                filename = secure_filename(file.filename)
+                file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                file.save(file_path)
+
+                # Save file info to database
+                img = Images(
+                    user_id=current_user.get_id(),
+                    post_id=post.id,
+                    image1=filename
+                )
+                db.session.add(img)
+
+        db.session.commit()
+        flash('Draft updated successfully!')
+        return redirect(url_for('my_drafts'))  # Redirect to My Drafts page
+
+    return render_template('creat_page.html', post=post, images=images)  # Pass images to the template
+
+@app.route('/delete_draft/<int:post_id>', methods=['POST'])
+@login_required
+def delete_draft(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.user_id != current_user.id:
+        abort(403)  # Forbidden if the user does not own the draft
+
+    # Delete associated images
+    images = Images.query.filter_by(post_id=post_id).all()
+    for image in images:
+        db.session.delete(image)
+
+    # Delete the post
+    db.session.delete(post)
+    db.session.commit()
+    flash('Draft deleted successfully!')
+    return redirect(url_for('my_drafts'))
 
 
 @app.route('/logout')

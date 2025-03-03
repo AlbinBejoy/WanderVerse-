@@ -52,7 +52,7 @@ def moderate(blog, post_id):
         return None
 
 
-def draft(blog, post_id=None):
+def draft(blog,user_id,post_id=None):
     try:
         if post_id:
             # Update an existing draft
@@ -61,6 +61,7 @@ def draft(blog, post_id=None):
                 existing_post.content = blog
                 existing_post.status = "draft"
                 db.session.commit()
+                print(f"Updated existing post with id {post_id}")
                 return existing_post
             else:
                 raise ValueError(f"Post with id {post_id} does not exist.")
@@ -72,7 +73,7 @@ def draft(blog, post_id=None):
                 tips=None,
                 duration=None,
                 category=None,
-                user_id=1,  # Assuming a default user_id
+                user_id=user_id,  # Assuming a default user_id
                 content=blog,
                 status="draft",
                 flagged=False,
@@ -85,6 +86,7 @@ def draft(blog, post_id=None):
             )
             db.session.add(new_draft)
             db.session.commit()
+            print(f"New draft created with content: {blog}")
             return new_draft
 
     except Exception as e:
@@ -93,7 +95,7 @@ def draft(blog, post_id=None):
         return None
 
 
-def make(blog, post_id=None):
+def make(blog, user_id ,post_id=None):
     try:
         if post_id:
             # Update an existing post
@@ -106,7 +108,7 @@ def make(blog, post_id=None):
                 raise ValueError(f"Post with id {post_id} does not exist.")
         else:
             # Draft the new post
-            draft_post = draft(blog)
+            draft_post = draft(blog,user_id=user_id)
             post_id = draft_post.id
 
         # Moderate the blog content

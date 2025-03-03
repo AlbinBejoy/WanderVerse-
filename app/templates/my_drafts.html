@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>My Drafts</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/draft.css') }}">
+{% endblock %}
+
+{% block body %}
+    <h1>My Drafts</h1>
+    <div class="drafts">
+
+        {% for post, images_str in results %}
+            <div class="draft" data-images="{{ images_str }}" style="position: relative;">
+                <a href="{{ url_for('edit_draft', post_id=post.id) }}">
+                    <img src="{{ url_for('static', filename='Images/' + images_str.split(',')[0]) }}" alt="Draft Image" class="draft-image">
+                    <div class="draft-title">Draft{{ loop.index }}</div>
+                    <div class="draft-content">{{ post.content }}</div>
+                </a>
+                <!-- Menu button inside each draft -->
+                <div class="menu-container" onclick="toggleMenu(this)">
+                    <div class="group">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                    <div class="frame1 menu hidden">
+                        <div class="info">
+                            <span>
+                                <div class="info"><span><a href="{{ url_for('delete', post_id=post.id) }}">Delete</a></span></div>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        // JavaScript to handle hover effect and image swapping
+        document.querySelectorAll('.draft').forEach(draft => {
+            const images = draft.dataset.images.split(',');
+            let currentIndex = 0;
+            const imgElement = draft.querySelector('.draft-image');
+
+            draft.addEventListener('mouseenter', () => {
+                currentIndex = 0; // Start cycling images on hover
+                draft.interval = setInterval(() => {
+                    currentIndex = (currentIndex + 1) % images.length;
+                    imgElement.src = `/static/Images/${images[currentIndex]}`;
+                }, 1000); // Change image every 1 second
+            });
+
+            draft.addEventListener('mouseleave', () => {
+                clearInterval(draft.interval);
+                imgElement.src = `/static/Images/${images[0]}`; // Reset to first image
+            });
+        });
+
+        function toggleMenu(element) {
+            // Find the menu element inside the clicked container
+            const menu = element.querySelector('.menu');
+
+            // Toggle the 'hidden' class to show or hide the menu
+            if (menu) {
+                menu.classList.toggle('hidden');
+            }
+
+            // Close other open menus (optional, if only one menu should be open at a time)
+            document.querySelectorAll('.menu-container .menu').forEach(otherMenu => {
+                if (otherMenu !== menu && !otherMenu.classList.contains('hidden')) {
+                    otherMenu.classList.add('hidden');
+                }
+            });
+        }
+
+    </script>
+{% endblock %}

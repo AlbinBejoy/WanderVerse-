@@ -57,6 +57,52 @@
                 alert('Error: ' + error.message);
             });
         }
+
+        function saveDraft() {
+            const content = document.getElementById('content').value;
+            const post_id = document.querySelector('input[name="post_id"]').value; // Get post_id from the hidden input
+            if (!content) {
+                alert('Please enter some content before saving as draft');
+                return;
+            }
+
+            // Show loader
+            const loader = document.querySelector('.load');
+            loader.classList.remove('hidden');
+
+            // Create form data
+            const formData = new FormData();
+            formData.append('content', content); // Always append content
+            if (post_id) {
+                formData.append('post_id', post_id); // Append post_id if it exists
+            }
+
+            // Send AJAX request to save draft
+            fetch('/save_draft', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Network response was not ok');
+            })
+            .then(data => {
+                loader.classList.add('hidden');
+                if (data.success) {
+                    alert('Draft saved successfully!');
+                } else {
+                    alert('Error saving draft: ' + data.message);
+                }
+            })
+            .catch(error => {
+                loader.classList.add('hidden');
+                alert('Error saving draft. Please try again.');
+                console.error('Error:', error);
+            });
+        }
+
     </script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/create.css') }}">
 {% endblock %}
@@ -67,7 +113,7 @@
     <form action="/create" method="POST" enctype="multipart/form-data" class="create-post-form" onsubmit="load()">
         <div class="form-group">
             <label for="content" class="label">Enter your post:</label>
-            <textarea name="content" id="content" class="textarea" placeholder="Write something..." required></textarea>
+            <textarea name="content" id="content" class="textarea" placeholder="Write something..." required>{{ post.content if post else '' }}</textarea>
         </div>
 
         <div class="form-group">
@@ -85,7 +131,9 @@
             <p class="ocr-note">This will extract text from the image and add it to your post.</p>
         </div>
 
-        <input type="submit" value="Post" class="submit-btn">
+        <input type="hidden" name="post_id" value="{{ post.id if post else '' }}">  <!-- Hidden field for post_id -->
+        <input type="submit" value="Post" class="submit-btn"><br>
+        <button type="button" class="submit-btn draft-btn" onclick="saveDraft()">Save as Draft</button>
     </form>
 </div>
 <div class="load hidden">

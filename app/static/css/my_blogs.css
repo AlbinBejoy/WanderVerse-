@@ -73,6 +73,20 @@ h1 {
     padding: 0 15px 10px;
 }
 
+.delete-btn {
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    color: #e0e0e0;
+    background-color: #ff704e; /* Change to your desired color */
+    border: none; /* Remove default border */
+    transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-color: #ff5722; /* Darker shade on hover */
+}
 
         .menu-container {
             position: absolute;
