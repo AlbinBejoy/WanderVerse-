@@ -130,56 +130,9 @@
             </div>
         </div>
 
-        <h2>What can you do with our Summarizer tool?</h2>
 
-        <!-- Use Cases -->
-        <div class="use-cases">
-            <div class="use-case">
-                <div class="use-case-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="9 11 12 14 22 4"></polyline>
-                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-                    </svg>
-                </div>
-                <h3>Simplify text</h3>
-                <p>Make complex information simpler</p>
-            </div>
 
-            <div class="use-case">
-                <div class="use-case-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="9 11 12 14 22 4"></polyline>
-                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-                    </svg>
-                </div>
-                <h3>Shorten reports</h3>
-                <p>Identify the most important details</p>
-            </div>
-
-            <div class="use-case">
-                <div class="use-case-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="9 11 12 14 22 4"></polyline>
-                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-                    </svg>
-                </div>
-                <h3>Highlight points</h3>
-                <p>Emphasize key points clearly</p>
-            </div>
-
-            <div class="use-case">
-                <div class="use-case-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="9 11 12 14 22 4"></polyline>
-                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-                    </svg>
-                </div>
-                <h3>Extract insights</h3>
-                <p>Identify the main ideas</p>
-            </div>
-        </div>
-
-        <h2>How to use Wanderverse?</h2>
+        <h2>How to use Wanderverse ?</h2>
         <p>Using WanderVerse is simple and intuitive. Here’s how you can get started :</p>
 
         <!-- Steps -->
@@ -221,49 +174,7 @@
             </div>
         </div>
 
-
-
-        <h2>Summarize your content in the following interesting ways</h2>
-
-        <!-- Demo Section -->
-        <div class="demo">
-            <div class="summary-length">
-                <label for="length-slider">Summary length</label>
-                <div class="slider-container">
-                    <span>Short</span>
-                    <input type="range" id="length-slider" class="slider" min="0" max="100" value="30">
-                    <span>Long</span>
-                </div>
-            </div>
-
-            <div class="demo-container">
-                <div class="demo-input">
-                    <h4>Input</h4>
-                    <p>Globalization has become a driving force in today's business world. It has transformed the way organizations operate and has opened new markets and opportunities for businesses of all sizes.</p>
-                </div>
-
-                <div class="demo-arrow">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
-                </div>
-
-                <div class="demo-output">
-                    <h4>Output</h4>
-                    <p>Globalization has significantly influenced the business landscape, transforming operations and opening up new markets for businesses of all sizes.</p>
-                </div>
-            </div>
-
-            <div style="margin-top: 20px;">
-                <h3>Paragraph</h3>
-                <p>Condense articles, reports, documents, and more down to the key points. You can easily control the length of the results using the length slider.</p>
-            </div>
-        </div>
-
-        <div class="btn-container">
-            <button class="btn">Try Summarizer Now</button>
-        </div>
+        <img class="demo" src="./static/ui_images/ilust.jpg" alt="LOADING">
     <div class="centez">
         <div class="main-container">
         <div class="image-container">
@@ -304,11 +215,48 @@
                 <button type="submit" class="login-btn">Login</button>
 
                 <div class="register">
-                    <p>Don't have an account? <a href="#">Register here</a></p>
+                    <p>Don't have an account? <a href=".register">Register here</a></p>
                 </div>
             </form>
         </div>
     </div>
+    <div class="register">
+        <h12>Register</h12>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    <form method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label>Username:</label>
+            <input type="text" name="username" required>
+        </div>
+        <div class="form-group">
+            <label>Email:</label>
+            <input type="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label>Password:</label>
+            <input type="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label>Phone Number:</label>
+            <input type="number" name="phone_number" required>
+        </div>
+        <div class="form-group">
+            <label>Profile Picture:</label>
+            <input type="file" name="profile_pic" accept="image/*">
+        </div>
+        <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+    </div>
+
     </div>
 
         <h2>Wanderverse FAQs</h2>
@@ -416,10 +364,6 @@
                 </div>
                 <div class="faq-answer">
                     Yes, your data is secure. WanderVerse uses encryption and follows strict privacy policies to protect your information.            </div>
-        </div>
-
-        <div class="btn-container">
-            <button class="btn">Start Summarizing Now</button>
         </div>
     </div>
 
