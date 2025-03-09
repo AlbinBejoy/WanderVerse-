@@ -1,35 +1,444 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderverse</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 </head>
-<body>
-    <h2>Login</h2>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                    {{ message }}
-                {% endfor %}
+<body  background="{{ url_for('static', filename='ui_images/N1.jpg') }}" style="background-repeat: no-repeat; background-size: cover; width: 100%; background-position: center; background-attachment: fixed; backdrop-filter: blur(5px); background-repeat: no-repeat;) " >
+
+<div class="banner">
+    <div class="slider" style="--quantity: 10">
+        <div class="item" style="--position: 1"><img src="./static/ui_images/3D-1.jpg" alt=""></div>
+        <div class="item" style="--position: 2"><img src="./static/ui_images/3D-2.jpg" alt=""></div>
+        <div class="item" style="--position: 3"><img src="./static/ui_images/3D-3.jpg" alt=""></div>
+        <div class="item" style="--position: 4"><img src="./static/ui_images/3D-4.jpg" alt=""></div>
+        <div class="item" style="--position: 5"><img src="./static/ui_images/3D-5.jpg" alt=""></div>
+        <div class="item" style="--position: 6"><img src="./static/ui_images/3D-6.jpg" alt=""></div>
+        <div class="item" style="--position: 7"><img src="./static/ui_images/3D-7.jpg" alt=""></div>
+        <div class="item" style="--position: 8"><img src="./static/ui_images/3D-8.jpg" alt=""></div>
+        <div class="item" style="--position: 9"><img src="./static/ui_images/3D-9.jpg" alt=""></div>
+        <div class="item" style="--position: 10"><img src="./static/ui_images/3D-10.jpg" alt=""></div>
+
+    </div>
+
+</div>
+    <div class="headtext">
+        <h11 id="title"></h11>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const title = document.getElementById('title');
+            const subtitle = document.getElementById('subtitle');
+            const text = "WANDERVERSE";
+
+            // Create span elements for each letter
+            for (let i = 0; i < text.length; i++) {
+                const span = document.createElement('span');
+                span.className = 'letter';
+                span.textContent = text[i];
+                span.style.transitionDelay = `${i * 0.1}s`;
+                title.appendChild(span);
+            }
+
+            // Animate the letters after a short delay
+            setTimeout(function() {
+                const letters = document.querySelectorAll('.letter');
+                letters.forEach(letter => {
+                    letter.classList.add('animate');
+                });
+
+                // Animate the subtitle after letters animation
+                setTimeout(function() {
+                    subtitle.classList.add('animate');
+                }, 1000);
+            }, 500);
+
+            // Add hover effect
+            title.addEventListener('mouseover', function() {
+                const letters = document.querySelectorAll('.letter');
+                letters.forEach((letter, index) => {
+                    letter.style.transition = 'transform 0.3s ease';
+                    letter.style.transitionDelay = `${index * 0.03}s`;
+                    letter.style.transform = 'translateY(-10px)';
+                });
+            });
+
+            title.addEventListener('mouseout', function() {
+                const letters = document.querySelectorAll('.letter');
+                letters.forEach((letter, index) => {
+                    letter.style.transition = 'transform 0.3s ease';
+                    letter.style.transitionDelay = `${index * 0.03}s`;
+                    letter.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+
+    <div class="container">
+        <h1>Craft Your Travel journeys with AI</h1>
+        <p>WanderVerse is an AI-powered travel blogging platform that organizes, structures, and categorizes travel experiences, enabling users to explore, share, and connect with like-minded travelers.
+</p>
+
+        <!-- Features Section -->
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon green">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="2" x2="22" y2="6"></line>
+                        <path d="M7.5 20.5L19 9l-4-4L3.5 16.5 2 22z"></path>
+                    </svg>
+                </div>
+                <h3>Turn Chaos into Order</h3>
+                <p>Transform unstructured travel ideas into structured, actionable plans with AI-powered insights on duration, places to visit, and highlights.</p>
             </div>
-        {% endif %}
-    {% endwith %}
-    <form method="POST">
-        <div class="form-group">
-            <label>Username:</label>
-            <input type="text" name="username" required>
+
+            <div class="feature">
+                <div class="feature-icon red">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="4" y1="6" x2="20" y2="6"></line>
+                        <line x1="4" y1="12" x2="20" y2="12"></line>
+                        <line x1="4" y1="18" x2="20" y2="18"></line>
+                    </svg>
+                </div>
+                <h3>OCR Conversion</h3>
+                <p>Extract text from travel documents effortlessly</p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon yellow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                </div>
+                <h3>Categorization</h3>
+                <p>Browse categorized travel blogs and curated recommendations to find your next adventure.</p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon purple">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="4" y1="6" x2="20" y2="6"></line>
+                        <line x1="4" y1="12" x2="14" y2="12"></line>
+                        <line x1="4" y1="18" x2="18" y2="18"></line>
+                    </svg>
+                </div>
+                <h3>Advanced Search</h3>
+                <p>Search across titles, locations, categories, user profiles, and even text within blogs.</p>
+            </div>
         </div>
-        <div class="form-group">
-            <label>Password:</label>
-            <input type="password" name="password" required>
+
+        <h2>What can you do with our Summarizer tool?</h2>
+
+        <!-- Use Cases -->
+        <div class="use-cases">
+            <div class="use-case">
+                <div class="use-case-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 11 12 14 22 4"></polyline>
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                    </svg>
+                </div>
+                <h3>Simplify text</h3>
+                <p>Make complex information simpler</p>
+            </div>
+
+            <div class="use-case">
+                <div class="use-case-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 11 12 14 22 4"></polyline>
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                    </svg>
+                </div>
+                <h3>Shorten reports</h3>
+                <p>Identify the most important details</p>
+            </div>
+
+            <div class="use-case">
+                <div class="use-case-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 11 12 14 22 4"></polyline>
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                    </svg>
+                </div>
+                <h3>Highlight points</h3>
+                <p>Emphasize key points clearly</p>
+            </div>
+
+            <div class="use-case">
+                <div class="use-case-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 11 12 14 22 4"></polyline>
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                    </svg>
+                </div>
+                <h3>Extract insights</h3>
+                <p>Identify the main ideas</p>
+            </div>
         </div>
-        <div class="checkbox-group">
-            <label>
-                <input type="checkbox" name="remember"> Remember me
-            </label>
+
+        <h2>How to use Wanderverse?</h2>
+        <p>Using WanderVerse is simple and intuitive. Here’s how you can get started :</p>
+
+        <!-- Steps -->
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Sign Up for Free</h3>
+                <p>First, type or paste your original, full-length text into the tool using the input box on the left. Or, you can upload the document you would like to summarize.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Add Preferences</h3>
+                <p>Tick your preferred categories for recommendations.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Write up your travel stories</h3>
+                <p>Paste text (above 200 words) or upload documents (e.g., travel blogs, notes, or itineraries) with separate images.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>Create Structured blogs </h3>
+                <p>Within seconds an organized content with title,duration,places to visit,travel tips ,highlights of the trip etc will be shown.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">5</div>
+                <h3>Store Your Favorite Spots</h3>
+                <p>Manage your profile and make it a one stop destination for all your dream destinations.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">6</div>
+                <h3>Discover New Adventures</h3>
+                <p>Search for specific destinations or browse through categorized content and recommendations from other explorers. Find inspiration for your next trip.</p>
+            </div>
         </div>
-        <button type="submit">Login</button>
-    </form>
-    <p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
+
+
+
+        <h2>Summarize your content in the following interesting ways</h2>
+
+        <!-- Demo Section -->
+        <div class="demo">
+            <div class="summary-length">
+                <label for="length-slider">Summary length</label>
+                <div class="slider-container">
+                    <span>Short</span>
+                    <input type="range" id="length-slider" class="slider" min="0" max="100" value="30">
+                    <span>Long</span>
+                </div>
+            </div>
+
+            <div class="demo-container">
+                <div class="demo-input">
+                    <h4>Input</h4>
+                    <p>Globalization has become a driving force in today's business world. It has transformed the way organizations operate and has opened new markets and opportunities for businesses of all sizes.</p>
+                </div>
+
+                <div class="demo-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </div>
+
+                <div class="demo-output">
+                    <h4>Output</h4>
+                    <p>Globalization has significantly influenced the business landscape, transforming operations and opening up new markets for businesses of all sizes.</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <h3>Paragraph</h3>
+                <p>Condense articles, reports, documents, and more down to the key points. You can easily control the length of the results using the length slider.</p>
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <button class="btn">Try Summarizer Now</button>
+        </div>
+    <div class="centez">
+        <div class="main-container">
+        <div class="image-container">
+
+            <div class="image-text">
+                <h2>Welcome </h2>
+                <p>Create your account and start your journey with us.</p>
+            </div>
+        </div>
+
+        <div class="login-container">
+            <h1>Login</h1>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <form>
+                <div class="input-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <div class="remember-me">
+                    <input type="checkbox" id="remember" name="remember">
+                    <label for="remember">Remember me</label>
+                </div>
+
+                <button type="submit" class="login-btn">Login</button>
+
+                <div class="register">
+                    <p>Don't have an account? <a href="#">Register here</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+
+        <h2>Wanderverse FAQs</h2>
+
+        <!-- FAQ Section -->
+        <div class="faq">
+            <div class="faq-item">
+                <div class="faq-question">
+                    What is WanderVerse?
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="faq-answer">
+                    WanderVerse is an AI-powered travel platform that helps you plan, organize, and share your travel journeys. From turning unstructured ideas into structured itineraries to exploring recommendations, WanderVerse makes travel planning effortless.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    How does the unstructured-to-structured conversion work?
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="faq-answer">
+                Simply write or paste text (200+ words) or upload documents (e.g., travel blogs, notes, or itineraries). WanderVerse extracts the text, separates images, and provides a structured output with details like title, duration, places to visit, and travel tips.                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    Is WanderVerse free to use?
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="faq-answer">
+                    Yes! WanderVerse offers a free plan with advanced tools like OCR conversion,  recommendations and user profile management.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    Can I share my travel stories on WanderVerse?
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="faq-answer">
+                    Absolutely! You can post your travel stories, upload photos, and share recommendations with the WanderVerse community.                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    How does content moderation work?
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="faq-answer">
+                    WanderVerse uses AI-backed moderation to ensure all content is high-quality, reliable, and verified. This creates a safe and engaging community for all users.                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    Can I search for specific destinations?
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="faq-answer">
+                    Yes! Use the search bar to find specific destinations or browse through categorized recommendations from other explorers.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    What file formats are supported for document uploads?
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="faq-answer">
+                    WanderVerse supports PDFs, Word documents, and plain text files for unstructured-to-structured conversion.                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    How do I organize my travel destinations?
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="faq-answer">
+                    You can categorize your destinations into custom lists (e.g., "Beaches" or "Mountains").
+                </div>
+            </div>
+
+             <div class="faq-item">
+                <div class="faq-question">
+                    Is my data safe on WanderVerse?
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="faq-answer">
+                    Yes, your data is secure. WanderVerse uses encryption and follows strict privacy policies to protect your information.            </div>
+        </div>
+
+        <div class="btn-container">
+            <button class="btn">Start Summarizing Now</button>
+        </div>
+    </div>
+
+    <script>
+        // Simple script to toggle FAQ answers
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const arrow = question.querySelector('svg');
+
+                if (answer.style.display === 'block') {
+                    answer.style.display = 'none';
+                    arrow.style.transform = 'rotate(0deg)';
+                } else {
+                    answer.style.display = 'block';
+                    arrow.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

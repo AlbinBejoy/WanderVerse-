@@ -1,5 +1,6 @@
 import json
 import easyocr
+from os import abort
 from flask import flash
 from app import app
 from app import login_manager
@@ -83,6 +84,11 @@ def login():
         password = request.form['password']
         remember = 'remember' in request.form
 
+        # Check if admin login
+        if username == 'admin' and password == 'admin':
+            flash('Admin login successful!')
+            return redirect(url_for('admin'))
+
         user = User.query.filter_by(username=username).first()
 
         if user and check_password_hash(user.password, password):
@@ -98,7 +104,7 @@ def login():
 
 @app.route('/old')
 def hello_world():  # put application's code here
-    return render_template("logo.html")
+    return render_template("creed.html")
 
 
 @app.route('/')
@@ -110,7 +116,7 @@ def home():  # put application's code here
         .group_by(Post.id)
         .all()
     )
-    return render_template('creed.html', results=results)
+    return render_template('logo.html', results=results)
 
 
 
