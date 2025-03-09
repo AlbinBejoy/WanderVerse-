@@ -14,7 +14,7 @@
                 <a href="{{ url_for('edit_draft', post_id=post.id) }}">
                     <img src="{{ url_for('static', filename='Images/' + images_str.split(',')[0]) }}" alt="Draft Image" class="draft-image">
                     <div class="draft-title">Draft{{ loop.index }}</div>
-                    <div class="draft-content">{{ post.content }}</div>
+                    <div class="draft-content">{{ post.content[:30] }}</div>
                 </a>
                 <!-- Menu button inside each draft -->
                 <div class="menu-container" onclick="toggleMenu(this)">

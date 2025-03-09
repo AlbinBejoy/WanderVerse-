@@ -39,7 +39,7 @@
     <div id="menu" class="sliding-menu">
         <a href="edit_profile" class="menu-item"><i class="fas fa-user-edit"></i> Edit Profile</a>
         <a href="#" class="menu-item"><i class="fas fa-question-circle"></i> Help</a>
-        <a href="#" class="menu-item"><i class="fas fa-comments"></i> Feedback</a>
+        <a href="{{ url_for('submit_feedback') }}" class="menu-item"><i class="fas fa-comments"></i> Feedback</a>
         <a href="#" class="menu-item"><i class="fas fa-cogs"></i> Settings</a>
         <a href="#" class="menu-item"><i class="fas fa-share-alt"></i> Share</a>
         <a href="{{ url_for('logout') }}" class="menu-item"><i class="fas fa-sign-out-alt"></i> Logout</a>

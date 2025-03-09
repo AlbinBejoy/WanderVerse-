@@ -1,0 +1,38 @@
+{% extends 'adminPages/adminhome.html' %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/feedbacks_admin.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="feedback-page">
+        <div class="page-header">
+            <h1 class="page-title">Feedbacks</h1>
+        </div>
+        <div class="feedback-table-container">
+            <table class="feedback-table">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Feedback</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if feedbacks %}
+                        {% for user,feedback in feedbacks %}
+                        <tr>
+                            <td>{{ user.username }}</td>
+                            <td>{{ feedback.message }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                         <tr>
+                            <td colspan="2" style="text-align: center;">No results found</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
