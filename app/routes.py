@@ -104,7 +104,7 @@ def login():
 
 @app.route('/old')
 def hello_world():  # put application's code here
-    return render_template("creed.html")
+    return render_template("wanderverse.html")
 
 
 @app.route('/')
