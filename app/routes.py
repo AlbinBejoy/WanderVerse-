@@ -511,6 +511,31 @@ def delete_draft(post_id):
     return redirect(url_for('my_drafts'))
 
 
+@app.route('/submit_feedback', methods=['GET', 'POST'])
+def submit_feedback():
+
+    user_id = current_user.get_id()
+
+    if request.method == 'POST':
+        message = request.form.get('content')
+
+        if not message:
+            flash('Feedback cannot be empty.')
+            return redirect(url_for('submit_feedback'))
+
+        # Create new feedback
+        new_feedback = Feedback(
+            user_id = user_id,
+            message = message,
+        )
+
+        db.session.add(new_feedback)
+        db.session.commit()
+
+        flash('Thank you for your feedback! We will review it shortly.')
+
+    return render_template('feedback.html')
+
 @app.route('/logout')
 @login_required
 def logout():

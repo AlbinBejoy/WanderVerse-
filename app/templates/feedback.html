@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Feedback</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/feedback.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="feedback-container">
+    <h1>Provide your Feedback</h1>
+    <form action="/submit_feedback" method="POST" enctype="multipart/form-data" class="feedback-form" onsubmit="load()">
+        <div class="form-group">
+            <label for="content" class="label">Enter your feedback:</label>
+            <textarea name="content" id="content" class="textarea" placeholder="We value your input to help us improve our services." required></textarea>
+        </div>
+        <input type="submit" value="Post" class="submit-btn"><br>
+    </form>
+</div>
+<div class="load hidden">
+    <img src="static/ui_images/load.gif" alt="Loading..." width="200px" height="200px">
+</div>
+
+<script>
+function load() {
+    const loader = document.querySelector('.load');
+    loader.classList.remove('hidden'); // Remove the hidden class to show the loader
+}
+</script>
+{% endblock %}

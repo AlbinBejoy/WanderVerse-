@@ -4,7 +4,14 @@ from app.models import *
 
 @app.route('/admin')
 def admin():
-    return render_template('adminPages/adminhome.html')
+    # Fetch posts with associated users
+    feedbacks = (
+        db.session.query(User, Feedback)
+        .join(Feedback, User.id == Feedback.user_id)
+        .all()
+    )
+
+    return render_template('adminPages/adminfeedback.html', feedbacks=feedbacks)
 
 @app.route('/users', methods=['GET', 'POST'])
 def users():
