@@ -17,11 +17,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('recommend'))
 
     if request.method == 'POST':
         username = request.form['username']
@@ -64,6 +63,7 @@ def register():
         try:
             db.session.add(new_user)
             db.session.commit()
+            new_user.index_user()
             flash('Registration successful! Please login.')
             return redirect(url_for('login'))
         except Exception as e:
@@ -71,13 +71,13 @@ def register():
             flash('An error occurred during registration. Please try again.')
             return redirect(url_for('register'))
 
-    return render_template('register.html')
+    return render_template('login.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('recommend'))
 
     if request.method == 'POST':
         username = request.form['username']
@@ -95,12 +95,11 @@ def login():
             login_user(user, remember=remember)
             next_page = request.args.get('next')
             flash('Logged in successfully!')
-            return redirect(next_page) if next_page else redirect(url_for('home'))
+            return redirect(next_page) if next_page else redirect(url_for('recommend'))
         else:
             flash('Invalid username or password!')
 
     return render_template('login.html')
-
 
 @app.route('/old')
 def hello_world():  # put application's code here
@@ -542,3 +541,8 @@ def logout():
     logout_user()
     flash('You have been logged out.')
     return redirect(url_for('login'))
+
+@app.route('/recommend')
+@login_required
+def recommend():
+    return render_template('recommend.html')
