@@ -553,6 +553,7 @@ def recommend():
         .outerjoin(Favorites, Favorites.post_id == Post.id)  # Use outerjoin to include posts with no favorites
         .group_by(Post.id)
         .order_by(db.desc('favorites_count'), db.desc(Post.id))  # Order by favorites count, then by post ID as a fallback
+        .filter(Post.status == 'live')
         .limit(10)  # Limit to top 10 posts
         .all()
     )
@@ -565,6 +566,7 @@ def recommend():
         db.session.query(Post.category)
         .join(Favorites, Favorites.post_id == Post.id)
         .filter(Favorites.user_id == current_user.id)
+        .filter(Post.status == 'live')
         .distinct()
         .all()
     )
