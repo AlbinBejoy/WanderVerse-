@@ -1,1 +1,68 @@
 {% extends 'base.html' %}
+
+{% block head %}
+    <title>Recommendations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/recommend.css') }}">
+{% endblock %}
+
+{% block body %}
+    <!-- Most Popular Posts Carousel -->
+    <div class="carousel-container">
+        <div class="carousel">
+            {% for post in popular_posts %}
+                <div class="carousel-item">
+                    <a href="{{ url_for('posts', post_id=post.id) }}">
+                        <!-- Check if post.images is not empty before accessing the first element -->
+                        {% if post.images %}
+                            <img src="{{ url_for('static', filename='Images/' + post.images[0]) }}" alt="Popular Post Image">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='Images/default.jpg') }}" alt="Default Image">
+                        {% endif %}
+                        <div class="carousel-title">{{ post.title }}</div>
+                        <div class="location">{{ post.location }}</div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Personalized Recommendations Grid -->
+    <div class="recommendations-grid">
+        <h2 style="font-size:50px">For You</h2>
+        <div class="grid">
+            {% for post in personalized_posts %}
+                <div class="grid-item">
+                    <a href="{{ url_for('posts', post_id=post.id) }}">
+                        <!-- Check if post.images is not empty before accessing the first element -->
+                        {% if post.images %}
+                            <img src="{{ url_for('static', filename='Images/' + post.images[0]) }}" alt="Recommended Post Image">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='Images/default.jpg') }}" alt="Default Image">
+                        {% endif %}
+                        <div class="grid-title">{{ post.title }}</div>
+                        <div class="grid-destination">{{ post.location }}</div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        // JavaScript for the carousel
+        let currentIndex = 0;
+        const carouselItems = document.querySelectorAll('.carousel-item');
+        const totalItems = carouselItems.length;
+
+        function showNextItem() {
+            carouselItems[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + 1) % totalItems;
+            carouselItems[currentIndex].classList.add('active');
+        }
+
+        // Automatically change the carousel item every 5 seconds
+        setInterval(showNextItem, 5000);
+
+        // Initialize the first item as active
+        carouselItems[0].classList.add('active');
+    </script>
+{% endblock %}

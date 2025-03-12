@@ -88,4 +88,54 @@ def delete_user(user_id):
     for post in posts:
         db.session.delete(post)
     db.session.commit()
-    return redirect('/users_admin')
+    return redirect('/users')
+
+
+# In your existing Flask app file
+
+@app.route('/view_post/<int:post_id>')
+def view_post(post_id):
+    # Fetch post details with associated user and related data
+    post_data = (
+        db.session.query(User, Post)
+        .join(Post, User.id == Post.user_id)
+        .filter(Post.id == post_id)
+        .first()
+    )
+    if not post_data:
+        return "Post not found", 404
+
+    user, post = post_data
+
+    # Fetch related data
+    images = Images.query.filter_by(post_id=post_id).all()
+    highlights = Highlight.query.filter_by(post_id=post_id).all()
+    activities = Activities.query.filter_by(post_id=post_id).all()
+    places = PlacesVisited.query.filter_by(post_id=post_id).all()
+
+    return render_template('adminPages/view_post.html',
+                           user=user,
+                           post=post,
+                           images=images,
+                           highlights=highlights,
+                           activities=activities,
+                           places=places)
+
+
+@app.route('/view_user/<int:user_id>')
+def view_user(user_id):
+    # Fetch user details
+    user = User.query.get_or_404(user_id)
+
+    # Fetch user's posts
+    posts = (
+        db.session.query(User, Post)
+        .join(Post, User.id == Post.user_id)
+        .filter(User.id == user_id)
+        .filter(Post.status != 'flagged')
+        .all()
+    )
+
+    return render_template('adminPages/view_user.html',
+                           user=user,
+                           posts=posts)

@@ -143,3 +143,32 @@ footer {
     color: #777777;
     font-size: 0.9rem;
 }
+/* Align title and favorite button */
+.post-details-header {
+    display: flex;
+    justify-content: space-between; /* Moves favorite button to the right */
+    align-items: center;
+    width: 100%;
+}
+
+/* Adjust favorite button positioning */
+.favorite-container {
+    margin-left: auto; /* Pushes it to the right */
+}
+
+.favorite-btn {
+    font-size: 18px;
+    color: #eaeaea;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+    text-decoration: none;
+
+}
+
+/* Change color when post is favorited */
+.favorite-btn .fas {
+    color: #ff704e; /* Highlighted when favorited */
+}
+

@@ -100,8 +100,9 @@ main{
 }
 
 .navbar:hover{
-    width: 14rem;
-    background-color: #000000;
+    width: 15rem;
+    background: rgb(0,0,0);
+    background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.22592787114845936) 68%, rgba(255,255,255,0) 100%);
 }
 
 .navbar:hover .link-text{
@@ -117,4 +118,23 @@ main{
     text-transform: uppercase;
     text-align: center;
     font-weight: bold;
+}
+#searchContainer {
+    background: #353535;
+    padding: 10px;
+    border-radius: 8px;
+    display: none;
+    z-index: 1000;
+    width: 300px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-left: 20px;
+}
+
+#searchInput {
+    border: none;
+    outline: none;
+    font-size: 16px;
+    width: 200px;
+    background: #353535;
+    color: #e0e0e0;
 }

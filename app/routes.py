@@ -1,7 +1,7 @@
 import json
 import easyocr
 from os import abort
-from flask import flash
+from flask import flash, jsonify
 from app import app
 from app import login_manager
 from flask import render_template, request, redirect, url_for
@@ -238,6 +238,7 @@ def posts(post_id):
     highlights_text = [highlight.highlight for highlight in highlights]
     activities_text = [activity.activity for activity in activities]
     places_visited_text = [place.place for place in places_visited]
+    user_favorites = {fav.post_id for fav in Favorites.query.filter_by(user_id=current_user.id).all()}
 
     # Render the template with the retrieved data
     return render_template(
@@ -247,7 +248,8 @@ def posts(post_id):
         images=images,
         highlights=highlights_text,
         activities=activities_text,
-        places_visited=places_visited_text
+        places_visited=places_visited_text,
+        user_favorites=user_favorites
     )
 @app.route('/My_blogs', methods=['GET', 'POST'])
 def my_blogs():
@@ -545,4 +547,85 @@ def logout():
 @app.route('/recommend')
 @login_required
 def recommend():
-    return render_template('recommend.html')
+    # Fetch most popular posts based on favorites
+    popular_posts = (
+        db.session.query(Post, db.func.count(Favorites.post_id).label('favorites_count'))
+        .outerjoin(Favorites, Favorites.post_id == Post.id)  # Use outerjoin to include posts with no favorites
+        .group_by(Post.id)
+        .order_by(db.desc('favorites_count'), db.desc(Post.id))  # Order by favorites count, then by post ID as a fallback
+        .limit(10)  # Limit to top 10 posts
+        .all()
+    )
+
+    # Extract Post objects from the tuples
+    popular_posts = [post for post, _ in popular_posts]
+
+    # Fetch personalized recommendations based on user's favorite categories
+    user_favorite_categories = (
+        db.session.query(Post.category)
+        .join(Favorites, Favorites.post_id == Post.id)
+        .filter(Favorites.user_id == current_user.id)
+        .distinct()
+        .all()
+    )
+
+    # Extract category names
+    favorite_categories = [category[0] for category in user_favorite_categories]
+
+    # If no favorite categories are found, fall back to some default categories or all categories
+    if not favorite_categories:
+        favorite_categories = ['Leisure', 'Business', 'Family']  # Example default categories
+
+    # Fetch posts that match the user's favorite categories
+    personalized_posts = (
+        db.session.query(Post)
+        .filter(Post.category.in_(favorite_categories))
+        .order_by(db.func.random())  # Randomize the order of posts
+        .limit(15)  # Limit to 10 personalized posts
+        .all()
+    )
+
+    # Attach images to posts
+    for post in popular_posts + personalized_posts:
+        post.images = [img.image1 for img in Images.query.filter_by(post_id=post.id).all()]
+        # Ensure post.images is not empty by providing a default image if no images are found
+        if not post.images:
+            post.images = ['default.jpg']  # Provide a default image
+
+    return render_template('recommend.html', popular_posts=popular_posts, personalized_posts=personalized_posts)\
+
+
+
+@app.route('/toggle_favorite/<int:post_id>')
+@login_required
+def toggle_favorite(post_id):
+    post = Post.query.get_or_404(post_id)
+    fav = Favorites.query.filter_by(user_id=current_user.id, post_id=post.id).first()
+
+    if fav:
+        db.session.delete(fav)  # Remove from favorites
+    else:
+        new_fav = Favorites(user_id=current_user.id, post_id=post.id)
+        db.session.add(new_fav)  # Add to favorites
+
+    db.session.commit()
+    return redirect(request.referrer or url_for('posts'))
+
+
+@app.route('/favorites')
+@login_required
+def favorites():
+    user_id = current_user.get_id()
+
+    # Fetch posts that are favorited by the current user
+    results = (
+        db.session.query(Post, db.func.coalesce(db.func.group_concat(Images.image1), ''))
+        .join(Favorites, Favorites.post_id == Post.id)
+        .outerjoin(Images, Post.id == Images.post_id)
+        .filter(Favorites.user_id == user_id)  # This now correctly belongs to query
+        .filter(Post.status == 'live')
+        .group_by(Post.id)
+        .all()
+    )
+
+    return render_template('favorites.html', results=results)

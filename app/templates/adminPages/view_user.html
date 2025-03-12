@@ -8,34 +8,35 @@
 {% block body %}
 <div class="users-page">
     <div class="page-header">
-        <h1 class="page-title">Users</h1>
-        <div class="search-container">
-            <form action="/users_search" method="get">
-                <label>
-                    <input class="form-control" type="text" placeholder="Search by username..." name="username">
-                    <input type="submit" value="Search">
-                </label>
-            </form>
-        </div>
+        <h1 class="page-title">User: {{ user.username }}</h1>
     </div>
+
+    <div class="detail-section">
+        <h2>User Details</h2>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Phone Number:</strong> {{ user.phone_number }}</p>
+        <p><strong>Profile Picture:</strong></p>
+        <img src="{{ url_for('static', filename='Images/' + user.profile_pic) }}" alt="Profile Picture"  style="max-width: 200px;">
+    </div>
+
+    <div class="detail-section">
+        <h2>User's Posts</h2>
         <div class="users-table-container">
             <table class="users-table">
                 <thead>
                     <tr>
-                        <th>Username</th>
-                        <th>Email</th>
+                        <th>Title</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                {% if users %}
-                    {% for user in users %}
+                {% if posts %}
+                    {% for user, post in posts %}
                     <tr>
-                        <td>{{ user.username }}</td>
-                        <td>{{ user.email }}</td>
+                        <td>{{ post.title }}</td>
                         <td>
-                            <a href="{{ url_for('view_user', user_id=user.id) }}" class="action-btn">View</a>
-                            <form action="{{ url_for('delete_user', user_id=user.id) }}" method="post" style="display:inline;">
+                            <a href="{{ url_for('view_post', post_id=post.id) }}" class="action-btn">View</a>
+                            <form action="{{ url_for('delete_admin', post_id=post.id) }}" method="post" style="display:inline;">
                                 <button type="submit" class="action-btn delete-btn">Delete</button>
                             </form>
                         </td>
@@ -43,11 +44,12 @@
                     {% endfor %}
                 {% else %}
                     <tr>
-                        <td>No results found</td>
+                        <td>No posts found</td>
                     </tr>
                 {% endif %}
                 </tbody>
             </table>
         </div>
     </div>
+</div>
 {% endblock %}

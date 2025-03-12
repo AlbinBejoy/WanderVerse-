@@ -4,6 +4,7 @@
     <title>{{ post.title }}</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 {% endblock %}
 
 {% block body %}
@@ -13,12 +14,21 @@
             <h2>@<a href="{{ url_for('display', user_id=user.id) }}">{{ user.username }}</a></h2>
         </header>
 
-        <section class="post-details">
-            <h3>Location:</h3>
-            <p>{{ post.location }}</p>
-            <h3>Duration:</h3>
-            <p>{{ post.duration }}</p>
-        </section>
+    <section class="post-details">
+        <div class="post-details-header">
+            <h3>Details</h3>
+            <div class="favorite-container">
+                <a href="{{ url_for('toggle_favorite', post_id=post.id) }}" class="favorite-btn">
+                    Favorite
+                    <i class="{% if post.id in user_favorites %}fas{% else %}far{% endif %} fa-bookmark" style="font-size: 24px"></i>
+                </a>
+            </div>
+        </div>
+        <h3>Location:</h3>
+        <p>{{ post.location }}</p>
+        <h3>Duration:</h3>
+        <p>{{ post.duration }}</p>
+    </section>
 
         <section class="post-images">
             {% for image in images %}

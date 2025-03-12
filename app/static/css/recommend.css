@@ -1,0 +1,129 @@
+/* Base styles */
+body {
+    background-color: #121212;
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+}
+main {
+    padding: 0;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #ff704e;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 2.8rem;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+/* Carousel Container */
+/* Add this to your existing carousel-item styles */
+.carousel-item {
+    min-width: 100%;
+    max-height:700px;
+    box-sizing: border-box;
+    display: none;
+    position: relative;
+}
+
+.carousel-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(18,18,18);
+    background: linear-gradient(0deg, rgba(18,18,18,1) 0%, rgba(18,18,18,0.5144432773109244) 49%, rgba(255,255,255,0) 100%);
+    z-index: 1; /* Places the gradient above the image but below the title */
+}
+
+.carousel-item.active {
+    display: block;
+}
+
+.carousel-item img {
+    width: 100%;
+    height:700px;
+    object-fit: cover;
+    position: relative;
+    z-index: 0; /* Ensures the image stays below the gradient */
+}
+
+.carousel-title {
+    position: absolute;
+    bottom: 55px;
+    left: 20px;
+    font-size: 4rem;
+    font-weight: 800;
+    color: #ffffff;
+    padding: 20px;
+    z-index: 2; /* Ensures the title stays above the gradient */
+}
+.location{
+    position: absolute;
+    bottom: 18px;
+    left: 20px;
+    font-size: 2rem;
+    font-weight: 500;
+    color: #ff704e;
+    padding: 20px;
+    z-index: 2; /* Ensures the title stays above the gradient */
+}
+    /* Recommendations Grid */
+
+    .recommendations-grid {
+        width: 90%;
+        max-width: 2000px;
+        margin: 20px auto;
+        padding: 20px;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 40px;
+    }
+
+    .grid-item {
+        background-color: #1e1e1e;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .grid-item:hover {
+        transform: scale(1.03);
+        box-shadow: 0 6px 15px rgba(255, 255, 255, 0.2);
+    }
+
+    .grid-item img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-bottom: 2px solid #333333;
+    }
+
+    .grid-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #e8e8e8;
+        padding: 10px 15px 5px;
+    }
+
+    .grid-destination {
+        font-size: 1rem;
+        font-weight: 400;
+        color: #ff704e;
+        padding: 0 15px 10px;
+    }
+.navbar-nav{
+    background-color: #000000;
+}

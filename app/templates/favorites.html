@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>My Favorites</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/my_blogs.css') }}">
+{% endblock %}
+
+{% block body %}
+    <h1>My Favorites</h1>
+    <div class="blogs">
+        {% for post, images_str in results %}
+            <div class="blog" data-images="{{ images_str }}" style="position: relative;">
+                <a href="{{ url_for('posts', post_id=post.id) }}">
+                    <img src="{{ url_for('static', filename='Images/' + images_str.split(',')[0]) }}" alt="Blog Image" class="blog-image">
+                    <div class="blog-title">{{ post.title }}</div>
+                    <div class="blog-destination">{{ post.location }}</div>
+                </a>
+                <!-- Menu button inside each blog -->
+                <div class="menu-container" onclick="toggleMenu(this)">
+                    <div class="group">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                    <div class="frame1 menu hidden">
+                        <div class="info"><span><a href="{{ url_for('delete', post_id=post.id) }}">Remove from Favorites</a></span></div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        // JavaScript to handle hover effect and image swapping
+        document.querySelectorAll('.blog').forEach(blog => {
+            const images = blog.dataset.images.split(',');
+            let currentIndex = 0;
+            const imgElement = blog.querySelector('.blog-image');
+
+            blog.addEventListener('mouseenter', () => {
+                currentIndex = 0; // Start cycling images on hover
+                blog.interval = setInterval(() => {
+                    currentIndex = (currentIndex + 1) % images.length;
+                    imgElement.src = `/static/Images/${images[currentIndex]}`;
+                }, 1000); // Change image every 1 second
+            });
+
+            blog.addEventListener('mouseleave', () => {
+                clearInterval(blog.interval);
+                imgElement.src = `/static/Images/${images[0]}`; // Reset to first image
+            });
+        });
+
+        function toggleMenu(element) {
+            // Find the menu element inside the clicked container
+            const menu = element.querySelector('.menu');
+
+            // Toggle the 'hidden' class to show or hide the menu
+            if (menu) {
+                menu.classList.toggle('hidden');
+            }
+
+            // Close other open menus (optional, if only one menu should be open at a time)
+            document.querySelectorAll('.menu-container .menu').forEach(otherMenu => {
+                if (otherMenu !== menu && !otherMenu.classList.contains('hidden')) {
+                    otherMenu.classList.add('hidden');
+                }
+            });
+        }
+    </script>
+{% endblock %}

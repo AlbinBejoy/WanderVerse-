@@ -34,7 +34,7 @@
                         <td>{{ user.username }}</td>
                         <td>{{ post.title }}</td>
                         <td>
-                            <button class="action-btn">View</button>
+                            <a href="{{ url_for('view_post', post_id=post.id) }}" class="action-btn">View</a>
                             <form action="{{ url_for('delete_admin', post_id=post.id) }}" method="post" style="display:inline;">
                                 <button type="submit" class="action-btn delete-btn">Delete</button>
                             </form>

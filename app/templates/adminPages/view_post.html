@@ -1,0 +1,76 @@
+{% extends 'adminPages/adminhome.html' %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <style>
+        .post-details { padding: 20px; max-width: 2000px; margin: 0 auto; }
+        .post-details h1 { color: #333; }
+        .detail-section { margin-bottom: 20px; }
+        .detail-section h2 { color: #4376d6; }
+        .image-gallery img { max-width: 200px; margin: 10px; }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="post-details">
+    <h1>{{ post.title }}</h1>
+    <p><strong>Posted by:</strong> {{ user.username }}</p>
+    
+    <div class="detail-section">
+        <h2>Content</h2>
+        <p>{{ post.content }}</p>
+    </div>
+
+    <div class="detail-section">
+        <h2>Details</h2>
+        <p><strong>Location:</strong> {{ post.location or 'N/A' }}</p>
+        <p><strong>Category:</strong> {{ post.category or 'N/A' }}</p>
+        <p><strong>Duration:</strong> {{ post.duration or 'N/A' }}</p>
+        <p><strong>Tips:</strong> {{ post.tips or 'N/A' }}</p>
+    </div>
+
+    <div class="detail-section">
+        <h2>Images</h2>
+        <div class="image-gallery">
+            {% for image in images %}
+                <img src="{{ url_for('static', filename='Images/' + image.image1) }}" alt="Image related to {{ post.title }}">
+            {% else %}
+                <p>No images available</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="detail-section">
+        <h2>Highlights</h2>
+        <ul>
+            {% for highlight in highlights %}
+                <li>{{ highlight.highlight }}</li>
+            {% else %}
+                <p>No highlights available</p>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="detail-section">
+        <h2>Top Attractions/Activities</h2>
+        <ul>
+            {% for activity in activities %}
+                <li>{{ activity.activity }}</li>
+            {% else %}
+                <p>No activities available</p>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="detail-section">
+        <h2>Places Visited</h2>
+        <ul>
+            {% for place in places %}
+                <li>{{ place.place }}</li>
+            {% else %}
+                <p>No places visited available</p>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

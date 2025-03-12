@@ -19,12 +19,10 @@ main {
 
 /* Main container for post creation */
 .create-post-container {
-    background-color: #1E1E1E; /* Slightly lighter dark background for the container */
     border-radius: 8px; /* Rounded corners for the container */
     padding: 2rem; /* Padding inside the container */
     width: 90%; /* Responsive width */
     max-width: 1000px; /* Maximum width for larger screens */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Soft shadow for depth */
 }
 
 /* Header styling */
