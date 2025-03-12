@@ -574,28 +574,30 @@ def recommend():
     # Extract category names
     favorite_categories = [category[0] for category in user_favorite_categories]
 
-    # If no favorite categories are found, fall back to some default categories or all categories
+    # If no favorite categories are found, fall back to some default categories
     if not favorite_categories:
         favorite_categories = ['Leisure', 'Business', 'Family']  # Example default categories
 
-    # Fetch posts that match the user's favorite categories
+    # Fetch posts that match the user's favorite categories, ensuring no duplicates
     personalized_posts = (
         db.session.query(Post)
         .filter(Post.category.in_(favorite_categories))
+        .filter(Post.status == 'live')  # Ensure live posts only
+        .distinct(Post.id)  # Ensure each post is unique by its ID
         .order_by(db.func.random())  # Randomize the order of posts
-        .limit(15)  # Limit to 10 personalized posts
+        .limit(15)  # Limit to 15 personalized posts
         .all()
     )
 
     # Attach images to posts
-    for post in popular_posts + personalized_posts:
+    all_posts = popular_posts + personalized_posts
+    for post in all_posts:
         post.images = [img.image1 for img in Images.query.filter_by(post_id=post.id).all()]
         # Ensure post.images is not empty by providing a default image if no images are found
         if not post.images:
             post.images = ['default.jpg']  # Provide a default image
 
-    return render_template('recommend.html', popular_posts=popular_posts, personalized_posts=personalized_posts)\
-
+    return render_template('recommend.html', popular_posts=popular_posts, personalized_posts=personalized_posts)
 
 
 @app.route('/toggle_favorite/<int:post_id>')
