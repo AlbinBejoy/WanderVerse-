@@ -43,7 +43,7 @@
                 <span class="link-text">Search</span>
             </a>
             <div id="searchContainer" class="hidden">
-                <input type="text" id="searchInput" placeholder="Search..." onkeyup="search()">
+                <input type="text" id="searchInput" placeholder="Search..." onkeyup="handleSearch(event)">
             </div>
         </li>
         <li class="nav-item">
@@ -63,7 +63,6 @@
             searchContainer.style.display = "none";
         }
     }
-
     function handleSearch(event) {
         if (event.key === "Enter") {
             var query = document.getElementById("searchInput").value;

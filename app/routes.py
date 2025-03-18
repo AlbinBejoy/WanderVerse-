@@ -63,7 +63,7 @@ def register():
         try:
             db.session.add(new_user)
             db.session.commit()
-            new_user.index_user()
+            new_user.index()
             flash('Registration successful! Please login.')
             return redirect(url_for('login'))
         except Exception as e:
@@ -158,6 +158,7 @@ def create():
 
         # Commit all image records
         db.session.commit()
+        add.index()
         return redirect('/posts/{post_id}'.format(post_id=post_id))
 
         # Check if editing an existing draft
@@ -344,15 +345,18 @@ def delete_trash(post_id):
 @login_required
 def display(user_id):
     user = User.query.get_or_404(user_id)
-    results = (
-        db.session.query(Post, db.func.coalesce(db.func.group_concat(Images.image1), ''))
-        .outerjoin(Images, Post.id == Images.post_id)
-        .filter(Post.user_id == user_id)
-        .filter(Post.status == 'live')
-        .group_by(Post.id)
-        .all()
-    )
-    return render_template('display.html', user=user, results=results)
+    if user.id != current_user.id:
+        results = (
+            db.session.query(Post, db.func.coalesce(db.func.group_concat(Images.image1), ''))
+            .outerjoin(Images, Post.id == Images.post_id)
+            .filter(Post.user_id == user_id)
+            .filter(Post.status == 'live')
+            .group_by(Post.id)
+            .all()
+        )
+        return render_template('display.html', user=user, results=results)
+    else:
+        return redirect('/profile')
 
 
 @app.route('/categories', methods=['GET', 'POST'])
@@ -633,3 +637,46 @@ def favorites():
     )
 
     return render_template('favorites.html', results=results)
+
+@app.route('/search', methods=['GET'])
+@login_required
+def search():
+    if not app.elasticsearch:
+        flash("Search is currently disabled.")
+        return redirect(url_for('home'))
+
+    query = request.args.get('q', '')
+    if len(query) < 3:
+        flash('Please enter at least 3 characters for search.')
+        return redirect(url_for('home'))
+
+    page = request.args.get('page', 1, type=int)
+
+    # Search for posts and users separately
+    post_query, total_posts = Post.search(
+        query, page, 10, exclude_user_id=current_user.id
+    )
+    user_query, total_users = User.search(query, page, 10)
+
+    # Get images for each post
+    post_ids = [post.id for post in post_query]
+    images_query = (
+        db.session.query(Images.post_id, db.func.group_concat(Images.image1).label("images"))
+        .filter(Images.post_id.in_(post_ids))
+        .group_by(Images.post_id)
+        .all()
+    )
+
+    # Create a mapping of post_id to images
+    images_dict = {post_id: images.split(",") if images else [] for post_id, images in images_query}
+
+    # Attach images to posts
+    for post in post_query:
+        post.images = images_dict.get(post.id, ["default.jpg"])
+
+    return render_template(
+        'search_results.html',
+        posts=post_query,
+        users=user_query,
+        query=query
+    )
