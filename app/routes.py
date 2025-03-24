@@ -1,8 +1,8 @@
 import json
 import easyocr
+import re
 from os import abort
-from flask import flash, jsonify
-from app import app
+from flask import flash
 from app import login_manager
 from flask import render_template, request, redirect, url_for
 from app.utility_ai import *
@@ -119,7 +119,7 @@ def home():  # put application's code here
 
 
 
-@app.route('/create', methods=['GET', 'POST'])
+@app.route('/create', methods=['POST'])
 @login_required
 def create():
     user_id = current_user.get_id()
@@ -221,7 +221,7 @@ def flagged():
 
 
 
-@app.route('/posts/<int:post_id>', methods=['GET', 'POST'])
+@app.route('/posts/<int:post_id>')
 def posts(post_id):
     # Get the post from the database
     post = Post.query.get_or_404(post_id)
@@ -252,7 +252,7 @@ def posts(post_id):
         places_visited=places_visited_text,
         user_favorites=user_favorites
     )
-@app.route('/My_blogs', methods=['GET', 'POST'])
+@app.route('/My_blogs')
 def my_blogs():
     user_id = 1
     results = (
@@ -266,7 +266,7 @@ def my_blogs():
     return render_template('my_blogs.html', results=results)
 
 
-@app.route('/trash', methods=['GET', 'POST'])
+@app.route('/trash')
 @login_required
 def trash():
     user_id = current_user.get_id()
@@ -310,7 +310,7 @@ def profile():
 
     return render_template('profile.html', user=user, results=results)
 
-@app.route('/delete/<int:post_id>', methods=['GET', 'POST'])
+@app.route('/delete/<int:post_id>')
 def delete(post_id):
     post = Post.query.get_or_404(post_id)
     post.status = 'trash'  # Updated to set 'status' to 'trash'
@@ -319,7 +319,7 @@ def delete(post_id):
     return redirect(request.referrer)
 
 
-@app.route('/restore/<int:post_id>', methods=['GET', 'POST'])
+@app.route('/restore/<int:post_id>')
 def restore(post_id):
     post = Post.query.get_or_404(post_id)
     post.status = 'live'  # Updated to set 'status' to 'draft'
@@ -328,7 +328,7 @@ def restore(post_id):
     return redirect('/profile')
 
 
-@app.route('/delete_trash/<int:post_id>', methods=['GET', 'POST'])
+@app.route('/delete_trash/<int:post_id>')
 def delete_trash(post_id):
     post = Post.query.get_or_404(post_id)
     images = Images.query.filter_by(post_id=post_id).all()  # Fetch all images related to the post
@@ -359,7 +359,7 @@ def display(user_id):
         return redirect('/profile')
 
 
-@app.route('/categories', methods=['GET', 'POST'])
+@app.route('/categories')
 @login_required
 def categories():
     user_id = current_user.get_id()
@@ -383,7 +383,7 @@ def categories():
 
 
 
-@app.route('/category/<category_name>', methods=['GET'])
+@app.route('/category/<category_name>')
 @login_required
 def category_details(category_name):
     user_id = current_user.get_id()
@@ -400,39 +400,57 @@ def category_details(category_name):
     return render_template('category_details.html', category=category_name, posts=results)
 
 
+# Email validation regex pattern
+EMAIL_REGEX = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
-    user_id = current_user.get_id() # Placeholder for the logged-in user
+    user_id = current_user.get_id()
     user = User.query.get_or_404(user_id)
 
     if request.method == 'POST':
         try:
             # Update user information from the form
-            user.username = request.form.get('username')
-            user.email = request.form.get('email')
-            user.phone_number = request.form.get('phone_number')
+            username = request.form.get('username')
+            email = request.form.get('email')
+            phone_number = request.form.get('phone_number')
+
+            # Validate email
+            if not email or not re.match(EMAIL_REGEX, email):
+                flash('Please enter a valid email address (e.g., example@domain.com)', 'danger')
+                return redirect(url_for('edit_profile'))
+
+            # Validate phone number
+            if not phone_number.isdigit() or len(phone_number) != 10:
+                flash('Phone number must be exactly 10 digits.', 'danger')
+                return redirect(url_for('edit_profile'))
+
+            # Update user object if validations pass
+            user.username = username
+            user.email = email
+            user.phone_number = phone_number
 
             # Handle profile picture upload
             profile_pic = request.files.get('profile_picture')
             if profile_pic and profile_pic.filename != '':
-                # Secure the filename and save the file
                 filename = secure_filename(profile_pic.filename)
                 profile_pic_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 profile_pic.save(profile_pic_path)
-                user.profile_pic = filename  # Update the profile_pic field in the database
+                user.profile_pic = filename
 
             # Commit changes to the database
             db.session.commit()
             flash('Profile updated successfully!', 'success')
-            return redirect(url_for('profile'))  # Redirect to the profile page
+            return redirect(url_for('profile'))
 
         except Exception as e:
-            db.session.rollback()  # Rollback in case of error
+            db.session.rollback()
             flash(f'An error occurred: {str(e)}', 'danger')
-            app.logger.error(f'Error updating profile: {str(e)}')  # Log the error
+            app.logger.error(f'Error updating profile: {str(e)}')
 
     return render_template('edit_profile.html', user=user)
+
 
 @app.route('/save_draft', methods=['POST'])
 def save_draft():
@@ -516,7 +534,7 @@ def delete_draft(post_id):
     return redirect(url_for('my_drafts'))
 
 
-@app.route('/submit_feedback', methods=['GET', 'POST'])
+@app.route('/submit_feedback', methods=['POST'])
 def submit_feedback():
 
     user_id = current_user.get_id()

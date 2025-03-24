@@ -19,7 +19,7 @@ def users():
         users = User.query.all()  # Fetch all users
         return render_template('adminPages/users.html', users=users)
 
-@app.route('/users_search', methods=['GET', 'POST'])
+@app.route('/users_search')
 def users_search():
     username = request.args.get('username')  # Fetch 'username' from the query string
     users = []
@@ -49,7 +49,7 @@ def posts_admin():
     )
     return render_template('adminPages/posts.html', posts=posts)
 
-@app.route('/posts_search', methods=['GET'])
+@app.route('/posts_search')
 def posts_search():
     username = request.args.get('username')  # Fetch 'username' from the query string
     posts = []
@@ -64,7 +64,7 @@ def posts_search():
     return render_template('adminPages/posts.html', posts=posts, username=username)
 
 
-@app.route('/delete_admin/<int:post_id>', methods=['GET', 'POST'])
+@app.route('/delete_admin/<int:post_id>')
 def delete_admin(post_id):
     post = Post.query.get_or_404(post_id)
     images = Images.query.filter_by(post_id=post_id).all()  # Fetch all images related to the post
@@ -77,7 +77,7 @@ def delete_admin(post_id):
     db.session.commit()
     return redirect(request.referrer or '/posts_admin')  # Redirect to the referring page or fallback URL
 
-@app.route('/delete_user/<int:user_id>', methods=['GET', 'POST'])
+@app.route('/delete_user/<int:user_id>')
 def delete_user(user_id):
     user = User.query.get_or_404(user_id)
     posts = Post.query.filter_by(user_id=user_id).all()
