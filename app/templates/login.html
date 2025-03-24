@@ -215,12 +215,27 @@
             <input type="email" id="register-email" name="email" required>
         </div>
         <div class="input-group">
-            <label for="register-password">Password</label>
-            <input type="password" id="register-password" name="password" required>
+        <label for="register-password">Password</label>
+        <input
+                type="password"
+                id="register-password"
+                name="password"
+                pattern="^(?=.*[0-9])(?=.*[\W_]).{8,}$"
+                title="Password must be at least 8 characters long and include a number and a special character."
+                required
+            >
         </div>
          <div class="input-group">
-            <label>Phone Number:</label>
-            <input type="number" name="phone_number" required>
+            <label for="phone_number">Phone Number:</label>
+            <input
+                type="tel"
+                id="phone_number"
+                name="phone_number"
+                pattern="^\d{10}$"
+                maxlength="10"
+                title="Phone number must be 10 digits."
+                required
+            >
         </div>
         <div class="input-group">
             <label>Profile Picture:</label>

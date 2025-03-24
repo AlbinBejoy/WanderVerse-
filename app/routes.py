@@ -1,8 +1,7 @@
 import json
 import easyocr
 from os import abort
-from flask import flash, jsonify
-from app import app
+from flask import flash
 from app import login_manager
 from flask import render_template, request, redirect, url_for
 from app.utility_ai import *
@@ -119,7 +118,7 @@ def home():  # put application's code here
 
 
 
-@app.route('/create', methods=['GET', 'POST'])
+@app.route('/create', methods=['POST'])
 @login_required
 def create():
     user_id = current_user.get_id()
@@ -221,7 +220,7 @@ def flagged():
 
 
 
-@app.route('/posts/<int:post_id>', methods=['GET', 'POST'])
+@app.route('/posts/<int:post_id>')
 def posts(post_id):
     # Get the post from the database
     post = Post.query.get_or_404(post_id)
@@ -252,7 +251,7 @@ def posts(post_id):
         places_visited=places_visited_text,
         user_favorites=user_favorites
     )
-@app.route('/My_blogs', methods=['GET', 'POST'])
+@app.route('/My_blogs')
 def my_blogs():
     user_id = 1
     results = (
@@ -266,7 +265,7 @@ def my_blogs():
     return render_template('my_blogs.html', results=results)
 
 
-@app.route('/trash', methods=['GET', 'POST'])
+@app.route('/trash')
 @login_required
 def trash():
     user_id = current_user.get_id()
@@ -310,7 +309,7 @@ def profile():
 
     return render_template('profile.html', user=user, results=results)
 
-@app.route('/delete/<int:post_id>', methods=['GET', 'POST'])
+@app.route('/delete/<int:post_id>')
 def delete(post_id):
     post = Post.query.get_or_404(post_id)
     post.status = 'trash'  # Updated to set 'status' to 'trash'
@@ -319,7 +318,7 @@ def delete(post_id):
     return redirect(request.referrer)
 
 
-@app.route('/restore/<int:post_id>', methods=['GET', 'POST'])
+@app.route('/restore/<int:post_id>')
 def restore(post_id):
     post = Post.query.get_or_404(post_id)
     post.status = 'live'  # Updated to set 'status' to 'draft'
@@ -328,7 +327,7 @@ def restore(post_id):
     return redirect('/profile')
 
 
-@app.route('/delete_trash/<int:post_id>', methods=['GET', 'POST'])
+@app.route('/delete_trash/<int:post_id>')
 def delete_trash(post_id):
     post = Post.query.get_or_404(post_id)
     images = Images.query.filter_by(post_id=post_id).all()  # Fetch all images related to the post
@@ -359,7 +358,7 @@ def display(user_id):
         return redirect('/profile')
 
 
-@app.route('/categories', methods=['GET', 'POST'])
+@app.route('/categories')
 @login_required
 def categories():
     user_id = current_user.get_id()
@@ -383,7 +382,7 @@ def categories():
 
 
 
-@app.route('/category/<category_name>', methods=['GET'])
+@app.route('/category/<category_name>')
 @login_required
 def category_details(category_name):
     user_id = current_user.get_id()
@@ -516,7 +515,7 @@ def delete_draft(post_id):
     return redirect(url_for('my_drafts'))
 
 
-@app.route('/submit_feedback', methods=['GET', 'POST'])
+@app.route('/submit_feedback', methods=['POST'])
 def submit_feedback():
 
     user_id = current_user.get_id()
