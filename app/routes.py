@@ -1,5 +1,6 @@
 import json
 import easyocr
+import re
 from os import abort
 from flask import flash, jsonify
 from app import app
@@ -400,39 +401,57 @@ def category_details(category_name):
     return render_template('category_details.html', category=category_name, posts=results)
 
 
+# Email validation regex pattern
+EMAIL_REGEX = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
-    user_id = current_user.get_id() # Placeholder for the logged-in user
+    user_id = current_user.get_id()
     user = User.query.get_or_404(user_id)
 
     if request.method == 'POST':
         try:
             # Update user information from the form
-            user.username = request.form.get('username')
-            user.email = request.form.get('email')
-            user.phone_number = request.form.get('phone_number')
+            username = request.form.get('username')
+            email = request.form.get('email')
+            phone_number = request.form.get('phone_number')
+
+            # Validate email
+            if not email or not re.match(EMAIL_REGEX, email):
+                flash('Please enter a valid email address (e.g., example@domain.com)', 'danger')
+                return redirect(url_for('edit_profile'))
+
+            # Validate phone number
+            if not phone_number.isdigit() or len(phone_number) != 10:
+                flash('Phone number must be exactly 10 digits.', 'danger')
+                return redirect(url_for('edit_profile'))
+
+            # Update user object if validations pass
+            user.username = username
+            user.email = email
+            user.phone_number = phone_number
 
             # Handle profile picture upload
             profile_pic = request.files.get('profile_picture')
             if profile_pic and profile_pic.filename != '':
-                # Secure the filename and save the file
                 filename = secure_filename(profile_pic.filename)
                 profile_pic_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 profile_pic.save(profile_pic_path)
-                user.profile_pic = filename  # Update the profile_pic field in the database
+                user.profile_pic = filename
 
             # Commit changes to the database
             db.session.commit()
             flash('Profile updated successfully!', 'success')
-            return redirect(url_for('profile'))  # Redirect to the profile page
+            return redirect(url_for('profile'))
 
         except Exception as e:
-            db.session.rollback()  # Rollback in case of error
+            db.session.rollback()
             flash(f'An error occurred: {str(e)}', 'danger')
-            app.logger.error(f'Error updating profile: {str(e)}')  # Log the error
+            app.logger.error(f'Error updating profile: {str(e)}')
 
     return render_template('edit_profile.html', user=user)
+
 
 @app.route('/save_draft', methods=['POST'])
 def save_draft():
