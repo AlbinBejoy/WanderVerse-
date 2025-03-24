@@ -1,5 +1,9 @@
-flask
-flask-sqlalchemy
-flask-login
-openai
-pydantic
+Flask==2.2.5
+Flask-SQLAlchemy==2.5.1
+Flask-Login==0.6.2
+Elasticsearch==7.17.0
+python-dotenv==1.0.0
+openai==1.6.0
+easyocr==1.6.2
+Werkzeug==2.2.2
+pydantic==1.10.12
