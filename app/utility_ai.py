@@ -17,7 +17,7 @@ class Travel(BaseModel):
     Activities: list[str] = Field(description="List of activities participated during this travel")
     Highlights: list[str]=Field(description="Wat happened on each day with day number included in at least 100 words")
     Tips: str
-    Category: str=Field(description="Which of the following categories the blog fits: Business,Leisure,Family,Religious,Sports,Educational,Wildlife,Medical,Adventure,+")
+    Category: str=Field(description="Which of the following categories the blog fits: Business,Leisure,Family,Religious,Sports,Educational,Wildlife,Medical,Adventure")
 
 def moderate(blog, post_id):
     try:
