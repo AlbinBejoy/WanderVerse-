@@ -145,36 +145,36 @@
 
             <div class="step">
                 <div class="step-number">2</div>
-                <h3>Add Preferences</h3>
-                <p>Tick your preferred categories for recommendations.</p>
-            </div>
-
-            <div class="step">
-                <div class="step-number">3</div>
                 <h3>Write up your travel stories</h3>
                 <p>Paste text (above 200 words) or upload documents (e.g., travel blogs, notes, or itineraries) with separate images.</p>
             </div>
 
             <div class="step">
-                <div class="step-number">4</div>
-                <h3>Create Structured blogs </h3>
+                <div class="step-number">3</div>
+                <h3>Create Structured blogs</h3>
                 <p>Within seconds an organized content with title,duration,places to visit,travel tips ,highlights of the trip etc will be shown.</p>
             </div>
 
             <div class="step">
-                <div class="step-number">5</div>
-                <h3>Store Your Favorite Spots</h3>
+                <div class="step-number">4</div>
+                <h3>Storing travel destinations in one place </h3>
                 <p>Manage your profile and make it a one stop destination for all your dream destinations.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">5</div>
+                <h3>Engage with the Community</h3>
+                <p>Share your travel stories, comment on other users' blogs, and connect with like-minded travelers to exchange tips and experiences.</p>
             </div>
 
             <div class="step">
                 <div class="step-number">6</div>
                 <h3>Discover New Adventures</h3>
-                <p>Search for specific destinations or browse through categorized content and recommendations from other explorers. Find inspiration for your next trip.</p>
+                <p> Search for specific destinations or browse through categorized content and recommendations from other explorers. Find inspiration for your next trip. Find inspiration for your next trip.</p>
             </div>
         </div>
 
-        <img class="demo" src="./static/ui_images/ilust.jpg" alt="LOADING">
+        <img class="demo" src="./static/ui_images/ilust.png" alt="LOADING">
     <div class="centez">
         <div class="main-container">
         <div class="image-container">
@@ -215,12 +215,27 @@
             <input type="email" id="register-email" name="email" required>
         </div>
         <div class="input-group">
-            <label for="register-password">Password</label>
-            <input type="password" id="register-password" name="password" required>
+        <label for="register-password">Password</label>
+        <input
+                type="password"
+                id="register-password"
+                name="password"
+                pattern="^(?=.*[0-9])(?=.*[\W_]).{8,}$"
+                title="Password must be at least 8 characters long and include a number and a special character."
+                required
+            >
         </div>
          <div class="input-group">
-            <label>Phone Number:</label>
-            <input type="number" name="phone_number" required>
+            <label for="phone_number">Phone Number:</label>
+            <input
+                type="tel"
+                id="phone_number"
+                name="phone_number"
+                pattern="^\d{10}$"
+                maxlength="10"
+                title="Phone number must be 10 digits."
+                required
+            >
         </div>
         <div class="input-group">
             <label>Profile Picture:</label>
@@ -310,17 +325,6 @@
 
             <div class="faq-item">
                 <div class="faq-question">
-                    What file formats are supported for document uploads?
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                </div>
-                <div class="faq-answer">
-                    WanderVerse supports PDFs, Word documents, and plain text files for unstructured-to-structured conversion.                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question">
                     How do I organize my travel destinations?
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="6 9 12 15 18 9"></polyline>
@@ -381,4 +385,5 @@
         });
     </script>
 </body>
+
 </html>

@@ -171,7 +171,7 @@
         .step-number {
             width: 50px;
             height: 50px;
-            background-color: #38a169;
+            background-color: #37463e;
             color: white;
             border-radius: 8px;
             display: flex;
@@ -308,7 +308,7 @@
         /* Button */
         .btn {
             display: inline-block;
-            background-color: #38a169;
+            background-color: #2f855a;
             color: white;
             padding: 12px 25px;
             border-radius: 6px;
@@ -475,7 +475,7 @@
             font-weight: 500;
         }
 
-        input[type="text"], input[type="password"],input[type="email"], input[type="number"]  {
+        input[type="text"], input[type="password"],input[type="email"], input[type="number"], input[type="tel"] {
             width: 100%;
             padding: 12px;
             border: 2px solid #333;
@@ -487,7 +487,7 @@
             box-sizing: border-box;
         }
 
-        input[type="text"]:focus, input[type="password"]:focus,input[type="email"]:focus, input[type="number"]:focus {
+        input[type="text"]:focus, input[type="password"]:focus,input[type="email"]:focus, input[type="number"]:focus,input[type="tel"]:focus {
             border-color: #ff6600;
             outline: none;
             box-shadow: 0 0 8px rgba(255, 102, 0, 0.5);
@@ -568,6 +568,7 @@
         }
         .headtext {
             text-align: center;
+            margin-top: -150px;
         }
 
         h11 {

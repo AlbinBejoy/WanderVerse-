@@ -125,7 +125,7 @@
         </div>
 
         <div class="form-group">
-            <label class="label">OCR: Extract text from image</label>
+            <label class="label">Upload Images from which text needs to be extracted</label>
            <input type="file" id="ocr-image" accept="image/*" class="file-input" onchange="document.getElementById('extract-btn').disabled = !this.value">
             <button type="button" id="extract-btn" class="add-btn" onclick="processOCR(document.getElementById('ocr-image'))" disabled>Extract Text</button>
             <p class="ocr-note">This will extract text from the image and add it to your post.</p>
