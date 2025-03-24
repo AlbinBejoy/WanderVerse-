@@ -119,7 +119,7 @@ def home():  # put application's code here
 
 
 
-@app.route('/create', methods=['POST'])
+@app.route('/create', methods=['GET','POST'])
 @login_required
 def create():
     user_id = current_user.get_id()
