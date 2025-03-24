@@ -534,7 +534,7 @@ def delete_draft(post_id):
     return redirect(url_for('my_drafts'))
 
 
-@app.route('/submit_feedback', methods=['POST'])
+@app.route('/submit_feedback', methods=['GET','POST'])
 def submit_feedback():
 
     user_id = current_user.get_id()
