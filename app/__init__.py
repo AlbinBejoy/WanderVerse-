@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import os
 from flask_login import LoginManager
-from elasticsearch import Elasticsearch
+#from elasticsearch import Elasticsearch
 from dotenv import load_dotenv
 load_dotenv()
 app = Flask(__name__)
