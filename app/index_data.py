@@ -1,4 +1,4 @@
-'''from app import app, db
+from app import app, db
 from app.models import Post, User
 
 def reindex():
@@ -14,4 +14,4 @@ def reindex():
 
 if __name__ == "__main__":
     with app.app_context():
-        reindex()'''
+        reindex()

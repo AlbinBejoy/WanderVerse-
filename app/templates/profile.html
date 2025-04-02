@@ -37,9 +37,11 @@
 
     <!-- Sliding Menu -->
     <div id="menu" class="sliding-menu">
-        <a href="#" class="menu-item"><i class="fas fa-question-circle"></i> Help</a>
+        <a href="{{ url_for('help') }}" class="menu-item"><i class="fas fa-question-circle"></i> Help</a>
         <a href="{{ url_for('submit_feedback') }}" class="menu-item"><i class="fas fa-comments"></i> Feedback</a>
-        <a href="#" class="menu-item"><i class="fas fa-share-alt"></i> Share</a>
+         <a href="#" class="menu-item" onclick="shareProfile(event)">
+            <i class="fas fa-share-alt"></i> Share
+        </a>
         <a href="{{ url_for('logout') }}" class="menu-item"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </div>
 </div>
@@ -113,5 +115,31 @@
             });
         }
     });
+
+        function shareProfile(event) {
+        event.preventDefault(); // Prevent the default anchor behavior
+
+        let userId = "{{ current_user.id }}"; // Get the logged-in user's ID from Flask
+        let shareUrl = window.location.origin + "/display/" + userId; // Construct shareable URL
+
+        if (navigator.share) {
+            // Use Web Share API if available
+            navigator.share({
+                title: "Check out this profile",
+                url: shareUrl
+            }).then(() => {
+                console.log("Shared successfully");
+            }).catch((error) => {
+                console.error("Error sharing:", error);
+            });
+        } else {
+            // Fallback: Copy to clipboard
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                alert("Link copied to clipboard!");
+            }).catch((err) => {
+                console.error("Error copying to clipboard:", err);
+            });
+        }
+    }
 </script>
 {% endblock %}

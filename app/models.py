@@ -54,16 +54,15 @@ class SearchableMixin(object):
 
     @classmethod
     def after_commit(cls, session):
-        for obj in session._changes['add']:
-            if isinstance(obj, cls):
-                obj.index()  # Index after commit
-        for obj in session._changes['update']:
-            if isinstance(obj, cls):
-                obj.index()
-        for obj in session._changes['delete']:
-            if isinstance(obj, cls):
-                remove_from_index(cls.__tablename__, obj)
-        session._changes = None
+        for obj in session.new:
+            if hasattr(obj, '__tablename__'):
+                add_to_index(obj.__tablename__, obj)
+        for obj in session.dirty:
+            if hasattr(obj, '__tablename__'):
+                add_to_index(obj.__tablename__, obj)
+        for obj in session.deleted:
+            if hasattr(obj, '__tablename__'):
+                remove_from_index(obj.__tablename__, obj)
 
 
 # Attach SQLAlchemy event listeners

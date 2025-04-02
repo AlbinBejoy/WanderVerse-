@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/help.css') }}">
+{% endblock %}
+
+{% block body %}
+<h2>Wanderverse FAQs</h2>
+
+        <!-- FAQ Section -->
+        <div class="faq">
+            <div class="faq-item">
+                <div class="faq-question">
+                    What is WanderVerse?
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="faq-answer">
+                    WanderVerse is an AI-powered travel platform that helps you plan, organize, and share your travel journeys. From turning unstructured ideas into structured itineraries to exploring recommendations, WanderVerse makes travel planning effortless.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    How does the unstructured-to-structured conversion work?
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="faq-answer">
+                Simply write or paste text (200+ words) or upload documents (e.g., travel blogs, notes, or itineraries). WanderVerse extracts the text, separates images, and provides a structured output with details like title, duration, places to visit, and travel tips.                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    Is WanderVerse free to use?
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="faq-answer">
+                    Yes! WanderVerse offers a free plan with advanced tools like OCR conversion,  recommendations and user profile management.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    Can I share my travel stories on WanderVerse?
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="faq-answer">
+                    Absolutely! You can post your travel stories, upload photos, and share recommendations with the WanderVerse community.                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    How does content moderation work?
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="faq-answer">
+                    WanderVerse uses AI-backed moderation to ensure all content is high-quality, reliable, and verified. This creates a safe and engaging community for all users.                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    Can I search for specific destinations?
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="faq-answer">
+                    Yes! Use the search bar to find specific destinations or browse through categorized recommendations from other explorers.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    How do I organize my travel destinations?
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="faq-answer">
+                    You can categorize your destinations into custom lists (e.g., "Beaches" or "Mountains").
+                </div>
+            </div>
+
+             <div class="faq-item">
+                <div class="faq-question">
+                    Is my data safe on WanderVerse?
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="faq-answer">
+                    Yes, your data is secure. WanderVerse uses encryption and follows strict privacy policies to protect your information.            </div>
+        </div>
+    </div>
+</div>
+    <script>
+            document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const arrow = question.querySelector('svg');
+
+                if (answer.style.display === 'block') {
+                    answer.style.display = 'none';
+                    arrow.style.transform = 'rotate(0deg)';
+                } else {
+                    answer.style.display = 'block';
+                    arrow.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+
+    </script>
+{% endblock %}

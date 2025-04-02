@@ -140,13 +140,13 @@
             <div class="step">
                 <div class="step-number">1</div>
                 <h3>Sign Up for Free</h3>
-                <p>First, type or paste your original, full-length text into the tool using the input box on the left. Or, you can upload the document you would like to summarize.</p>
+                <p>Create your account in seconds and start exploring</p>
             </div>
 
             <div class="step">
                 <div class="step-number">2</div>
                 <h3>Write up your travel stories</h3>
-                <p>Paste text (above 200 words) or upload documents (e.g., travel blogs, notes, or itineraries) with separate images.</p>
+                <p>First, type or paste your original, full-length text into the tool using the input box on the left. Or, you can upload the document you would like to summarize.</p>
             </div>
 
             <div class="step">
@@ -246,6 +246,15 @@
             Already a member? <button type="button" class="toggle-btn" id="toggle-to-login">Login</button>
         </p>
     </form>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for message in messages %}
+            <p class="flash-message">{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
 </div>
     </div>
     </div>
@@ -384,6 +393,9 @@
             });
         });
     </script>
+<footer style="text-align: center">
+    &copy; 2025 Wanderverse. All rights reserved.
+</footer>
 </body>
 
 </html>

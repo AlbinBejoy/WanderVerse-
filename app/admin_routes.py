@@ -64,7 +64,7 @@ def posts_search():
     return render_template('adminPages/posts.html', posts=posts, username=username)
 
 
-@app.route('/delete_admin/<int:post_id>')
+@app.route('/delete_admin/<int:post_id>', methods=['POST'])
 def delete_admin(post_id):
     post = Post.query.get_or_404(post_id)
     images = Images.query.filter_by(post_id=post_id).all()  # Fetch all images related to the post
@@ -72,12 +72,16 @@ def delete_admin(post_id):
     # Delete all associated images
     for image in images:
         db.session.delete(image)
+    Favorites.query.filter_by(post_id=post_id).delete()
+    Highlight.query.filter_by(post_id=post_id).delete()
+    Activities.query.filter_by(post_id=post_id).delete()
+    PlacesVisited.query.filter_by(post_id=post_id).delete()
 
     db.session.delete(post)  # Delete the post
     db.session.commit()
     return redirect(request.referrer or '/posts_admin')  # Redirect to the referring page or fallback URL
 
-@app.route('/delete_user/<int:user_id>')
+@app.route('/delete_user/<int:user_id>', methods=['POST'])
 def delete_user(user_id):
     user = User.query.get_or_404(user_id)
     posts = Post.query.filter_by(user_id=user_id).all()
@@ -87,6 +91,11 @@ def delete_user(user_id):
         db.session.delete(image)
     for post in posts:
         db.session.delete(post)
+    Feedback.query.filter_by(user_id=user_id).delete()
+    Favorites.query.filter_by(user_id=user_id).delete()
+    Highlight.query.filter_by(user_id=user_id).delete()
+    Activities.query.filter_by(user_id=user_id).delete()
+    PlacesVisited.query.filter_by(user_id=user_id).delete()
     db.session.commit()
     return redirect('/users')
 

@@ -40,6 +40,7 @@ def register():
         # Validate unique fields
         if User.query.filter_by(username=username).first():
             flash('Username already exists!')
+            print("Flash message: Username already exists!")
             return redirect(url_for('register'))
 
         if User.query.filter_by(email=email).first():
@@ -85,7 +86,7 @@ def login():
         remember = 'remember' in request.form
 
         # Check if admin login
-        if username == 'admin' and password == 'admin':
+        if username == 'admin' and password == 'Admin@123':
             flash('Admin login successful!')
             return redirect(url_for('admin'))
 
@@ -698,3 +699,8 @@ def search():
         users=user_query,
         query=query
     )
+
+@app.route('/help', methods=['GET'])
+@login_required
+def help():
+    return render_template('help.html')
